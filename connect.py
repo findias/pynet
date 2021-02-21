@@ -1,4 +1,5 @@
-from pprint import pprint
+import device
+import yaml
 import re
 from netmiko import (
     ConnectHandler,
@@ -15,10 +16,11 @@ def send_show_command(device, commands):
                 output = ssh.send_command(command)
                 int_status[command] = output
         return int_status
-    except (NetmikoTimeoutException,NetmikoAuthenticationException) as error:
+    except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
         print(error)
 
 if __name__ == "__main__":
+
     device = {
         "device_type": "cisco_ios",
         "ip": "172.20.254.7",
@@ -45,13 +47,13 @@ if __name__ == "__main__":
     for sort_port_connected in port_list:
         if (sort_port_connected in list_mac_addr_table) != True:
                 no_mac_address_port.append(sort_port_connected)
+
 ### Restart port ####
     if no_mac_address_port:
         port_for_reset = ''
         for port in no_mac_address_port:
             port_for_restart = port
             restart_port = send_show_command(device, ['conf t', 'int' + port_for_reset, 'shutdown', 'no shutdown'])
-
 
     #pprint(restart_port, width=120)
     #pprint(list_mac_addr_table, width=120)
