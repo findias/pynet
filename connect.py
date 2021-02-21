@@ -45,9 +45,6 @@ if __name__ == "__main__":
     for sort_port_connected in port_list:
         if (sort_port_connected in list_mac_addr_table) != True:
                 no_mac_address_port.append(sort_port_connected)
-
-    print(no_mac_address_port)
-
 ### Restart port ####
     if no_mac_address_port:
         port_for_reset = ''
