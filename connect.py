@@ -23,6 +23,7 @@ def send_show_command(device, commands):
             output = ssh.send_command(command)
             int_status[command] = output
             logging.info(received_msg.format(datetime.now().time(), ip))
+
     return int_status
 
 ### Connect whith device and send conf t command ####
@@ -34,10 +35,9 @@ def send_conf_command(device, commands):
     logging.info(start_msg.format(datetime.now().time(), ip))
     with ConnectHandler(**device) as ssh:
         ssh.enable()
-        for command in commands:
-            ssh.send_config_set(command)
-            logging.info(received_msg.format(datetime.now().time(), ip))
-
+        conf_output = ssh.send_config_set(commands)
+        logging.info(received_msg.format(datetime.now().time(), ip))
+        return conf_output
 if __name__ == "__main__":
 
     show_command = ["show interface status", "sh mac address-table | inc 400"]
@@ -50,7 +50,6 @@ if __name__ == "__main__":
     with open('device.yaml', 'r') as f:
         all_device = yaml.safe_load(f)
         for list_device in all_device:
-            # for name_device in list_device.keys():
             for name_device, device in list_device.items():
                 int_status_result = send_show_command(device, show_command)
 
@@ -76,9 +75,7 @@ if __name__ == "__main__":
                 if no_mac_address_port:
                   port_for_reset = ''
                   for port in no_mac_address_port:
-                       port_for_restart = port
-                       restart_port = send_conf_command(device, ['int' + port_for_reset, 'shutdown', 'no shutdown'])
-
-
+                       # restart_port = send_show_command(device, ['conf t', 'int ' + port, 'shutdown', 'no shutdown'])
+                       restart_port = send_conf_command(device, ['int ' + port, 'shutdown', 'no shutdown'])
         print(datetime.now() - start_time)
         pprint(no_mac_address_port, width=120)
