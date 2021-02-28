@@ -34,7 +34,7 @@ def connect_to_device(import_file, command):
 #         for device, output in zip(connect, result):
 #             print(device['ip'], output)
 
-all_device = yaml_import('device.yaml')
+all_device = yaml_import('conf_device.yaml')
 command ='show run'
 connect = connect_to_device(all_device, command)
 ####thread = thread_pool(connect_to_device, all_device, command)
