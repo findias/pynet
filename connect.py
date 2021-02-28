@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#! /usr/bin/python3
 
 from datetime import datetime
 import logging
@@ -10,7 +10,7 @@ from netmiko import (
     NetmikoTimeoutException,
     NetmikoAuthenticationException
 )
-### Connect whith device and send show command ####
+### Connect whith device and send show command ###
 def send_show_command(device, commands):
     # start_msg = '===> {} Connection: {}'
     # received_msg = '<=== {} Received: {}'
@@ -26,7 +26,7 @@ def send_show_command(device, commands):
 
     return int_status
 
-### Connect whith device and send conf t command ####
+### Connect whith device and send conf t command ###
 
 def send_conf_command(device, commands):
     #start_msg = '===> {} Connection: {}'
@@ -48,7 +48,7 @@ if __name__ == "__main__":
    # format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
    # level = logging.INFO)
 
-    with open('/usr/lib/zabbix/externalscripts/device.yaml', 'r') as f:
+    with open('device.yaml', 'r') as f:
         all_device = yaml.safe_load(f)
         for list_device in all_device:
             for name_device, device in list_device.items():
