@@ -1,22 +1,41 @@
-#! /usr/bin/python3
-
-from itertools import repeat
-from concurrent.futures import ThreadPoolExecutor
-import time
-from datetime import datetime
-
+import device
+from pprint import pprint
 import yaml
-import netmiko
+from netmiko import Netmiko
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
 
-def send_show(device, show):
-    with netmiko.ConnectHandler(**device) as ssh:
-        ssh.enable()
-        result = ssh.send_command(show)
-        return result
+def yaml_import(file_config):
+    with open(file_config, 'r') as f:
+        all_device = yaml.safe_load(f)
+    return all_device
 
+def connect_to_device(import_file, command):
+    for host in import_file['hosts']:
+        net_connection = Netmiko(
+            # name = host['name'],
+            host = host['ip'],
+            username = host['username'],
+            password = host['password'],
+            port = host['port'],
+            device_type = host['type'],
+            secret = host['secret']
+        )
+        net_connection.enable()
+        output = net_connection.send_command(command)
+        # print(host['ip'])
+        with open(f"{host['name']}.txt", 'w') as f:
+             f.write(output)
+    return output
 
+# def thread_pool(function, connect, command):
+#     with ThreadPoolExecutor(max_workers=3) as executor:
+#         result = executor.map(function, connect, repeat(command))
+#         for device, output in zip(connect, result):
+#             print(device['ip'], output)
 
-
-
-
-if __name__ == "__main__":
+all_device = yaml_import('device.yaml')
+command ='show run'
+connect = connect_to_device(all_device, command)
+####thread = thread_pool(connect_to_device, all_device, command)
+# print(all_device)
