@@ -13,7 +13,6 @@ def yaml_import(file_config):
 def connect_to_device(import_file, command):
     for host in import_file['hosts']:
         net_connection = Netmiko(
-            # name = host['name'],
             host = host['ip'],
             username = host['username'],
             password = host['password'],
@@ -34,7 +33,7 @@ def connect_to_device(import_file, command):
 #         for device, output in zip(connect, result):
 #             print(device['ip'], output)
 
-all_device = yaml_import('conf_device.yaml')
+all_device = yaml_import('conf_device_cit.yaml')
 command ='show run'
 connect = connect_to_device(all_device, command)
 ####thread = thread_pool(connect_to_device, all_device, command)
