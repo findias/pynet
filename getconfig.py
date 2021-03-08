@@ -13,17 +13,17 @@ def yaml_import(file_config):
 def connect_to_device(import_file, command):
     for host in import_file['hosts']:
         net_connection = Netmiko(
-            host = host['ip'],
-            username = host['username'],
-            password = host['password'],
-            port = host['port'],
-            device_type = host['type'],
-            secret = host['secret']
+            host=host['ip'],
+            username=host['username'],
+            password=host['password'],
+            port=host['port'],
+            device_type=host['type'],
+            secret=host['secret']
         )
         net_connection.enable()
         output = net_connection.send_command(command)
         # print(host['ip'])
-        with open(f"{host['name']}.txt", 'w') as f:
+        with open(f"{host['name']}" + "_tech-support.txt", 'w') as f:
              f.write(output)
     return output
 
