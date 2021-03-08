@@ -1,4 +1,6 @@
+from datetime import datetime
 import yaml
+import logging
 from netmiko import Netmiko
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
@@ -15,6 +17,10 @@ def conf_file(yaml_config):                                         # Create con
     return devices_config_list
 
 def connect_and_send_command(host, command):                        # Connect to devices
+    start_msg = '===> {} Connection: {}'
+    received_msg = '<=== {} Received:{}'
+    ip = host['ip']
+    logging.info(start_msg.format(datetime.now().time(), ip))
     net_connection = Netmiko(
         host=host['ip'],
         username=host['username'],
@@ -25,9 +31,15 @@ def connect_and_send_command(host, command):                        # Connect to
     )
     net_connection.enable()
     output = net_connection.send_command(command)
+    logging.info(received_msg.format(datetime.now().time(), ip))
     return output
 
-all_device = yaml_import('conf_device.yaml')
+logging.getLogger('paramiko').setLevel(logging.WARNING)
+logging.basicConfig(
+format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
+level=logging.INFO)
+
+all_device = yaml_import('conf_device_cit.yaml')
 command ='show run'
 connect_value = conf_file(all_device)
 
