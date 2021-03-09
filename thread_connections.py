@@ -29,9 +29,10 @@ def connect_and_send_command(host, command):                        # Connect to
         device_type=host['type'],
         secret=host['secret']
     )
-    net_connection.enable()
-    output = net_connection.send_command(command)
-    logging.info(received_msg.format(datetime.now().time(), ip))
+    with net_connection as ssh:
+        ssh.enable()
+        output = ssh.send_command(command)
+        logging.info(received_msg.format(datetime.now().time(), ip))
     return output
 
 logging.getLogger('paramiko').setLevel(logging.WARNING)
@@ -39,12 +40,12 @@ logging.basicConfig(
 format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
 level=logging.INFO)
 
-all_device = yaml_import('conf_device_cit.yaml')
+all_device = yaml_import('conf_device.yaml')
 command ='show run'
 connect_value = conf_file(all_device)
 
 with ThreadPoolExecutor(max_workers=5) as executor:
     result = executor.map(connect_and_send_command, connect_value, repeat(command))
     for device, output in zip(connect_value, result):
-        with open(f"{device['name']}", 'w') as f:
+        with open(f"{device['name']}", 'w+') as f:
             f.write(output)
