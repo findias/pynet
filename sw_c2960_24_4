@@ -1,0 +1,3216 @@
+
+------------------ show clock ------------------
+
+
+16:08:07.843 MSK Thu Jul 15 2021
+
+------------------ show version ------------------
+
+Cisco IOS Software, C2960 Software (C2960-LANBASEK9-M), Version 15.0(2)SE5, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2013 by Cisco Systems, Inc.
+Compiled Fri 25-Oct-13 13:34 by prod_rel_team
+
+ROM: Bootstrap program is C2960 boot loader
+BOOTLDR: C2960 Boot Loader (C2960-HBOOT-M) Version 12.2(25r)SEE1, RELEASE SOFTWARE (fc1)
+
+sw-c2960-24-4 uptime is 8 hours, 0 minutes
+System returned to ROM by power-on
+System restarted at 08:07:44 MSK Thu Jul 15 2021
+System image file is "flash:/c2960-lanbasek9-mz.150-2.SE5.bin"
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco WS-C2960-24TT-L (PowerPC405) processor (revision C0) with 65536K bytes of memory.
+Processor board ID FOC1123W288
+Last reset from power-on
+2 Virtual Ethernet interfaces
+24 FastEthernet interfaces
+2 Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+
+64K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 00:1B:0D:81:4E:80
+Motherboard assembly number     : 73-10390-03
+Power supply part number        : 341-0097-02
+Motherboard serial number       : FOC11224D2C
+Power supply serial number      : AZS112002WA
+Model revision number           : C0
+Motherboard revision number     : C0
+Model number                    : WS-C2960-24TT-L
+System serial number            : FOC1123W288
+Top Assembly Part Number        : 800-27221-02
+Top Assembly Revision Number    : D0
+Version ID                      : V02
+CLEI Code Number                : COM3L00BRA
+Hardware Board Revision Number  : 0x01
+
+
+Switch Ports Model              SW Version            SW Image                 
+------ ----- -----              ----------            ----------               
+*    1 26    WS-C2960-24TT-L    15.0(2)SE5            C2960-LANBASEK9-M        
+
+
+Configuration register is 0xF
+
+
+------------------ show running-config ------------------
+
+
+Building configuration...
+
+Current configuration : 9067 bytes
+!
+! No configuration change since last restart
+!
+version 15.0
+no service pad
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+!
+hostname sw-c2960-24-4
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 <removed>
+!
+username admin password 7 <removed>
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authentication login aaaVTY group tacacs+ local
+aaa authentication enable default enable
+aaa authorization console
+!
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone MSK 3 0
+system mtu routing 1500
+vtp domain CROC
+vtp mode off
+!
+!
+no ip domain-lookup
+ip domain-name volga.croc.ru
+!
+mls qos srr-queue output dscp-map queue 1 threshold 3 40 41 42 43 44 45 46 47
+mls qos srr-queue output dscp-map queue 2 threshold 3 18
+mls qos srr-queue output dscp-map queue 3 threshold 3 0
+mls qos
+!
+!
+!
+!
+!
+!
+!
+no errdisable detect cause pagp-flap
+no errdisable detect cause dtp-flap
+no errdisable detect cause link-flap
+errdisable recovery cause udld
+errdisable recovery cause bpduguard
+errdisable recovery cause pagp-flap
+errdisable recovery cause dtp-flap
+errdisable recovery cause link-flap
+errdisable recovery cause storm-control
+!
+spanning-tree mode mst
+spanning-tree logging
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 100
+ name USERS
+!
+vlan 101
+ name WIFI_CORPORATE
+!
+vlan 102
+ name IP_TELEPHONY
+!
+vlan 105
+ name PRINTERS
+!
+vlan 106
+ name CSGroup_USERS
+!
+vlan 107
+ name GUEST_WIFI
+!
+vlan 108
+ name TELECOM_DEPARTAMENT
+!
+vlan 120
+ name NEVA_OLD_NET
+!
+vlan 900
+ name MGMT
+!
+vlan 910
+ name WIFI_MGMT
+!
+vlan 999
+ name RSPAN
+ remote-span
+lldp run
+!
+!
+class-map match-any MGMT_MARK
+  match access-group 10
+!
+policy-map MGMT_MARK
+ class MGMT_MARK
+   set dscp af21
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+ description xP-xx Faratov V. room xxx
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ switchport port-security maximum 2
+ switchport port-security
+ switchport port-security violation protect
+ srr-queue bandwidth share 10 90 90 90
+ priority-queue out 
+ mls qos trust dscp
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/2
+ description => ap-1041n-2
+ switchport access vlan 910
+ switchport trunk allowed vlan 101,107,910
+ switchport mode trunk
+ spanning-tree guard loop
+!
+interface FastEthernet0/3
+ description 5p16 Kosenkov for equipment testing
+ switchport access vlan 100
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/4
+ description xP-xx Kosenkov A. room xxx
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/5
+ switchport access vlan 100
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/6
+ description "Vertyanov assistant"
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/7
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/8
+ description xP-xx Rodionov S.
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/9
+ description HP_LJ_2727_Service
+ switchport access vlan 105
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/10
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/11
+ description xP-xx Bogolepova A. (Service)
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/12
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/13
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/14
+ description "Bodrov Eugeniy"
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/15
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/16
+ description 7P-17 root 219 Bodrov E.
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/17
+ switchport access vlan 100
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/18
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/19
+ description => Skynet Wi-Fi router
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/20
+ description SKLAD
+ switchport access vlan 101
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/21
+ description HP-3015
+ switchport access vlan 105
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/22
+ switchport access vlan 100
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/23
+ description "Guseva Anzhela"
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface FastEthernet0/24
+ switchport access vlan 100
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet0/1
+ switchport mode trunk
+!
+interface GigabitEthernet0/2
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+!
+interface Vlan900
+ ip address 172.20.254.4 255.255.255.128
+!
+ip local policy route-map AAA
+ip default-gateway 172.20.254.1
+no ip http server
+no ip http secure-server
+!
+ip access-list standard SNMP-ACL
+ permit 172.20.140.157
+ deny   any log
+!
+ip access-list extended MGMT
+ permit tcp 172.20.120.0 0.0.0.255 any eq 22 log
+access-list 10 permit 10.87.79.0 0.0.0.255
+route-map AAA permit 10
+ match ip address 10
+ set ip precedence network
+!
+snmp-server group G1 v3 priv access SNMP-ACL
+snmp-server trap-source Vlan900
+snmp-server enable traps transceiver all
+snmp-server enable traps tty
+snmp-server enable traps cpu threshold
+snmp-server enable traps envmon fan shutdown supply temperature status
+snmp-server enable traps config
+snmp-server enable traps errdisable
+snmp-server host 172.20.140.157 version 3 priv <removed> 
+!
+!
+!
+no vstack
+banner motd ^C
+This is an official computer system and is the property of the
+CJSC "CCT MAY". It is for authorized users only. Unauthorized users
+are prohibited. Users (authorized or unauthorized) have no explicit
+or implicit expectation of privacy. Any or all uses of this system
+may be subject to one or more of the following actions: interception,
+monitoring, recording, auditing, inspection and disclosing to security
+personnel and law enforcement personnel, as well as authorized
+officials of other agencies, both domestic and foreign. By using this
+system, the user consents to these actions. Unauthorized or improper
+use of this system may result in administrative disciplinary action
+and civil and criminal penalties. By accessing this system you
+indicate your awareness of and consent to these terms and conditions
+of use. Discontinue access immediately if you do not agree to the
+conditions stated in this notice.
+&
+^C
+!
+line con 0
+ exec-timeout 5 0
+ logging synchronous
+line vty 0 4
+ exec-timeout 5 0
+ logging synchronous
+ transport preferred none
+ transport input telnet ssh
+line vty 5 15
+ exec-timeout 5 0
+ logging synchronous
+ transport preferred none
+ transport input telnet ssh
+!
+ntp server 172.20.140.3
+end
+
+
+------------------ show stacks ------------------
+
+
+Minimum process stacks:
+ Free/Size   Name
+ 4772/6000   hulc_flash init
+ 5612/6000   CDP BLOB
+ 8520/9000   IP Background
+ 8520/9000   IP Connected Route Background
+ 4168/6000   EEM Shell Director
+ 5268/6000   SMI IBC server process
+ 5596/6000   vqpc_shim_create_addr_tbl
+ 5572/6000   SPAN Subsystem
+ 5532/6000   stp_change_tree_type
+ 4976/6000   hpm bulk_vlan_state process
+18748/24000  Init
+59612/60000  EEM Auto Registration Proc
+ 5612/6000   SASL MAIN
+ 2564/3000   LIM WAVL
+ 8600/9000   cdp init process
+ 5424/6000   RADIUS INITCONFIG
+ 5496/6000   Hulc Backup Interface Process
+ 2512/3000   Rom Random Update Process
+18272/24000  hulc_techsupport_process
+ 5016/12000  SSH Process
+
+Interrupt level stacks:
+Level    Called Unused/Size  Name
+  4  1190289037   8368/9000  NETWORK INTERFACE CHIP
+  5           0   9000/9000  SUPERVISOR EXCEPTIONS
+  6        6564   8936/9000  NS16550 VECTOR
+
+------------------ show interfaces ------------------
+
+
+Vlan1 is up, line protocol is up 
+  Hardware is EtherSVI, address is 001b.0d81.4ec0 (bia 001b.0d81.4ec0)
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive not supported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 01:20:40, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     513 packets input, 31678 bytes, 0 no buffer
+     Received 0 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 2 interface resets
+     0 unknown protocol drops
+     0 output buffer failures, 0 output buffers swapped out
+Vlan900 is up, line protocol is up 
+  Hardware is EtherSVI, address is 001b.0d81.4ec1 (bia 001b.0d81.4ec1)
+  Internet address is 172.20.254.4/25
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive not supported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:00, output 00:00:00, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 1000 bits/sec, 1 packets/sec
+  5 minute output rate 2000 bits/sec, 1 packets/sec
+     12388 packets input, 1830905 bytes, 0 no buffer
+     Received 0 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     12538 packets output, 5638218 bytes, 0 underruns
+     0 output errors, 2 interface resets
+     0 unknown protocol drops
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/1 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e81 (bia 001b.0d81.4e81)
+  Description: xP-xx Faratov V. room xxx
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:27, output 00:00:02, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 6000 bits/sec, 6 packets/sec
+     2813 packets input, 662530 bytes, 0 no buffer
+     Received 1895 broadcasts (972 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 972 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     316788 packets output, 51245163 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/2 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e82 (bia 001b.0d81.4e82)
+  Description: => ap-1041n-2
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:17, output 00:00:01, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 29315
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 27000 bits/sec, 6 packets/sec
+  5 minute output rate 104000 bits/sec, 6 packets/sec
+     1519169 packets input, 473813667 bytes, 0 no buffer
+     Received 2930 broadcasts (1808 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 1808 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     4499978 packets output, 3419212316 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/3 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e83 (bia 001b.0d81.4e83)
+  Description: 5p16 Kosenkov for equipment testing
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/4 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e84 (bia 001b.0d81.4e84)
+  Description: xP-xx Kosenkov A. room xxx
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/5 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e85 (bia 001b.0d81.4e85)
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/6 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e86 (bia 001b.0d81.4e86)
+  Description: "Vertyanov assistant"
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:29, output 00:00:02, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 6000 bits/sec, 6 packets/sec
+     2747 packets input, 649813 bytes, 0 no buffer
+     Received 1880 broadcasts (972 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 972 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     316758 packets output, 51210798 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/7 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e87 (bia 001b.0d81.4e87)
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:09, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 1375
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 2000 bits/sec, 1 packets/sec
+  5 minute output rate 131000 bits/sec, 8 packets/sec
+     124311 packets input, 23936998 bytes, 0 no buffer
+     Received 8031 broadcasts (1322 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 1322 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     448474 packets output, 169831018 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/8 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e88 (bia 001b.0d81.4e88)
+  Description: xP-xx Rodionov S.
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:58, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 4
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 7000 bits/sec, 6 packets/sec
+     4863 packets input, 1013795 bytes, 0 no buffer
+     Received 1312 broadcasts (964 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 964 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     320400 packets output, 52237972 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/9 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e89 (bia 001b.0d81.4e89)
+  Description: HP_LJ_2727_Service
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/10 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e8a (bia 001b.0d81.4e8a)
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:28, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 1699
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 2000 bits/sec, 2 packets/sec
+  5 minute output rate 18000 bits/sec, 12 packets/sec
+     172531 packets input, 112169085 bytes, 0 no buffer
+     Received 2206 broadcasts (1184 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 1184 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     558545 packets output, 256167064 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/11 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e8b (bia 001b.0d81.4e8b)
+  Description: xP-xx Bogolepova A. (Service)
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:46, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 1114
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 8000 bits/sec, 7 packets/sec
+     152355 packets input, 33544521 bytes, 0 no buffer
+     Received 3592 broadcasts (2861 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 2861 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     498939 packets output, 219694013 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/12 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e8c (bia 001b.0d81.4e8c)
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:29, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 7000 bits/sec, 6 packets/sec
+     2784 packets input, 655216 bytes, 0 no buffer
+     Received 1896 broadcasts (972 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 972 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     316755 packets output, 51224929 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/13 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e8d (bia 001b.0d81.4e8d)
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:07, output 00:00:01, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 82294
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 1000 bits/sec, 2 packets/sec
+  5 minute output rate 11000 bits/sec, 8 packets/sec
+     573921 packets input, 94635141 bytes, 0 no buffer
+     Received 2995 broadcasts (1878 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 1878 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     1039590 packets output, 618092463 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/14 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e8e (bia 001b.0d81.4e8e)
+  Description: "Bodrov Eugeniy"
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:15, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 13764
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 2000 bits/sec, 1 packets/sec
+  5 minute output rate 15000 bits/sec, 9 packets/sec
+     300598 packets input, 137631643 bytes, 0 no buffer
+     Received 2042 broadcasts (1602 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 1602 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     613175 packets output, 210122097 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/15 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e8f (bia 001b.0d81.4e8f)
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:24, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 2143
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 11000 bits/sec, 9 packets/sec
+     172464 packets input, 63644181 bytes, 0 no buffer
+     Received 3227 broadcasts (2139 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 2139 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     512435 packets output, 158783897 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/16 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e90 (bia 001b.0d81.4e90)
+  Description: 7P-17 root 219 Bodrov E.
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:02, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 7000 bits/sec, 6 packets/sec
+     2692 packets input, 725335 bytes, 0 no buffer
+     Received 1836 broadcasts (966 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 966 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     316784 packets output, 51238642 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/17 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e91 (bia 001b.0d81.4e91)
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/18 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e92 (bia 001b.0d81.4e92)
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/19 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e93 (bia 001b.0d81.4e93)
+  Description: => Skynet Wi-Fi router
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/20 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e94 (bia 001b.0d81.4e94)
+  Description: SKLAD
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/21 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e95 (bia 001b.0d81.4e95)
+  Description: HP-3015
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/22 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e96 (bia 001b.0d81.4e96)
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/23 is up, line protocol is up (connected) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e97 (bia 001b.0d81.4e97)
+  Description: "Guseva Anzhela"
+  MTU 1500 bytes, BW 100000 Kbit/sec, DLY 100 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 100Mb/s, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:59, output 00:00:02, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 6000 bits/sec, 6 packets/sec
+     1925 packets input, 615805 bytes, 0 no buffer
+     Received 1319 broadcasts (964 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 964 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     317078 packets output, 51082590 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+FastEthernet0/24 is down, line protocol is down (notconnect) 
+  Hardware is Fast Ethernet, address is 001b.0d81.4e98 (bia 001b.0d81.4e98)
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+GigabitEthernet0/1 is up, line protocol is up (connected) 
+  Hardware is Gigabit Ethernet, address is 001b.0d81.4e99 (bia 001b.0d81.4e99)
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full-duplex, 1000Mb/s, media type is 10/100/1000BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:01, output 00:00:05, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 6647000 bits/sec, 595 packets/sec
+  5 minute output rate 109000 bits/sec, 37 packets/sec
+     28112002 packets input, 36542617841 bytes, 0 no buffer
+     Received 612538 broadcasts (210269 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 210269 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     3029112 packets output, 950022378 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+GigabitEthernet0/2 is down, line protocol is down (notconnect) 
+  Hardware is Gigabit Ethernet, address is 001b.0d81.4e9a (bia 001b.0d81.4e9a)
+  MTU 1500 bytes, BW 10000 Kbit/sec, DLY 1000 usec, 
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Auto-duplex, Auto-speed, media type is 10/100/1000BaseTX
+  input flow-control is off, output flow-control is unsupported 
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input never, output never, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/75/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 0 bits/sec, 0 packets/sec
+  5 minute output rate 0 bits/sec, 0 packets/sec
+     0 packets input, 0 bytes, 0 no buffer
+     Received 0 broadcasts (0 multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     0 input packets with dribble condition detected
+     0 packets output, 0 bytes, 0 underruns
+     0 output errors, 0 collisions, 1 interface resets
+     0 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+
+------------------ show interfaces history ------------------
+
+
+
+------------------ show controllers ------------------
+
+
+
+     Transmit FastEthernet0/1                 Receive
+     51246317 Bytes                           662530 Bytes                    
+         5333 Unicast frames                     918 Unicast frames           
+       155054 Multicast frames                   972 Multicast frames         
+       156407 Broadcast frames                   923 Broadcast frames         
+            0 Too old frames                  275942 Unicast bytes            
+            0 Deferred frames                 214580 Multicast bytes          
+            0 MTU exceeded frames             164612 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                1252 65 to 127 byte frames    
+            0 9 collision frames                 501 128 to 255 byte frames   
+            0 10 collision frames                829 256 to 511 byte frames   
+            0 11 collision frames                216 512 to 1023 byte frames  
+            0 12 collision frames                 15 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        34648 64 byte frames                       0 Valid frames, too small  
+       164226 127 byte frames          
+        62471 255 byte frames                      0 Too old frames           
+        46616 511 byte frames                      0 Valid oversize frames    
+         7959 1023 byte frames                     0 System FCS error frames  
+          874 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/2                 Receive
+   3419213314 Bytes                        473814726 Bytes                    
+      4438748 Unicast frames                 1516245 Unicast frames           
+        24668 Multicast frames                  1808 Multicast frames         
+        36568 Broadcast frames                  1123 Broadcast frames         
+            0 Too old frames               466832769 Unicast bytes            
+            0 Deferred frames                 605050 Multicast bytes          
+            0 MTU exceeded frames             161654 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                2456 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                5319 Minimum size frames      
+            0 8 collision frames               55958 65 to 127 byte frames    
+            0 9 collision frames             1164875 128 to 255 byte frames   
+            0 10 collision frames              89753 256 to 511 byte frames   
+            0 11 collision frames              51560 512 to 1023 byte frames  
+            0 12 collision frames             154167 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+         3843 64 byte frames                       0 Valid frames, too small  
+      1352196 127 byte frames          
+       894014 255 byte frames                      0 Too old frames           
+       101361 511 byte frames                      0 Valid oversize frames    
+        51869 1023 byte frames                     0 System FCS error frames  
+      2096665 1518 byte frames                     0 RxPortFifoFull drop frame
+           36 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/3                 Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/4                 Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/5                 Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/6                 Receive
+     51212020 Bytes                           649813 Bytes                    
+         5288 Unicast frames                     867 Unicast frames           
+       155054 Multicast frames                   972 Multicast frames         
+       156423 Broadcast frames                   908 Broadcast frames         
+            0 Too old frames                  264755 Unicast bytes            
+            0 Deferred frames                 214580 Multicast bytes          
+            0 MTU exceeded frames             163346 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                1198 65 to 127 byte frames    
+            0 9 collision frames                 497 128 to 255 byte frames   
+            0 10 collision frames                826 256 to 511 byte frames   
+            0 11 collision frames                215 512 to 1023 byte frames  
+            0 12 collision frames                 11 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        34648 64 byte frames                       0 Valid frames, too small  
+       164227 127 byte frames          
+        62467 255 byte frames                      0 Too old frames           
+        46613 511 byte frames                      0 Valid oversize frames    
+         7957 1023 byte frames                     0 System FCS error frames  
+          853 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/7                 Receive
+    169832304 Bytes                         23937158 Bytes                    
+       143110 Unicast frames                  116282 Unicast frames           
+       154756 Multicast frames                  1322 Multicast frames         
+       150616 Broadcast frames                  6709 Broadcast frames         
+            0 Too old frames                22747427 Unicast bytes            
+            0 Deferred frames                 269713 Multicast bytes          
+            0 MTU exceeded frames             822182 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                 232 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames               42537 Minimum size frames      
+            0 8 collision frames               48084 65 to 127 byte frames    
+            0 9 collision frames               15692 128 to 255 byte frames   
+            0 10 collision frames               8451 256 to 511 byte frames   
+            0 11 collision frames               3255 512 to 1023 byte frames  
+            0 12 collision frames               6510 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                 16 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        47956 64 byte frames                       0 Valid frames, too small  
+       189144 127 byte frames          
+        71510 255 byte frames                      0 Too old frames           
+        53634 511 byte frames                      0 Valid oversize frames    
+        12494 1023 byte frames                     0 System FCS error frames  
+        73726 1518 byte frames                     0 RxPortFifoFull drop frame
+           18 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/8                 Receive
+     52239341 Bytes                          1013795 Bytes                    
+         8391 Unicast frames                    3551 Unicast frames           
+       155049 Multicast frames                   964 Multicast frames         
+       156968 Broadcast frames                   348 Broadcast frames         
+            0 Too old frames                  611569 Unicast bytes            
+            0 Deferred frames                 243742 Multicast bytes          
+            0 MTU exceeded frames             129544 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                 208 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                 208 Minimum size frames      
+            0 8 collision frames                2759 65 to 127 byte frames    
+            0 9 collision frames                1069 128 to 255 byte frames   
+            0 10 collision frames                825 256 to 511 byte frames   
+            0 11 collision frames                 14 512 to 1023 byte frames  
+            0 12 collision frames                191 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  5 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        34647 64 byte frames                       0 Valid frames, too small  
+       166911 127 byte frames          
+        63044 255 byte frames                      0 Too old frames           
+        46580 511 byte frames                      0 Valid oversize frames    
+         7934 1023 byte frames                     0 System FCS error frames  
+          767 1518 byte frames                     0 RxPortFifoFull drop frame
+          525 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/9                 Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/10                Receive
+    256168561 Bytes                        112169149 Bytes                    
+       247380 Unicast frames                  170326 Unicast frames           
+       154866 Multicast frames                  1184 Multicast frames         
+       156309 Broadcast frames                  1022 Broadcast frames         
+            0 Too old frames               111748124 Unicast bytes            
+            0 Deferred frames                 235176 Multicast bytes          
+            0 MTU exceeded frames             178569 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames               47171 Minimum size frames      
+            0 8 collision frames               45637 65 to 127 byte frames    
+            0 9 collision frames                6371 128 to 255 byte frames   
+            0 10 collision frames               3718 256 to 511 byte frames   
+            0 11 collision frames               2914 512 to 1023 byte frames  
+            0 12 collision frames              66721 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        84578 64 byte frames                       0 Valid frames, too small  
+       198572 127 byte frames          
+        79690 255 byte frames                      0 Too old frames           
+        51166 511 byte frames                      0 Valid oversize frames    
+        10662 1023 byte frames                     0 System FCS error frames  
+       133887 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/11                Receive
+    219696190 Bytes                         33545033 Bytes                    
+       189369 Unicast frames                  148771 Unicast frames           
+       153162 Multicast frames                  2861 Multicast frames         
+       156424 Broadcast frames                   731 Broadcast frames         
+            0 Too old frames                32719062 Unicast bytes            
+            0 Deferred frames                 561912 Multicast bytes          
+            0 MTU exceeded frames             189767 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                 240 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames               72533 Minimum size frames      
+            0 8 collision frames               47644 65 to 127 byte frames    
+            0 9 collision frames                9444 128 to 255 byte frames   
+            0 10 collision frames               4872 256 to 511 byte frames   
+            0 11 collision frames               4644 512 to 1023 byte frames  
+            0 12 collision frames              13459 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  7 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        51181 64 byte frames                       0 Valid frames, too small  
+       205274 127 byte frames          
+        69474 255 byte frames                      0 Too old frames           
+        50336 511 byte frames                      0 Valid oversize frames    
+        11660 1023 byte frames                     0 System FCS error frames  
+       111012 1518 byte frames                     0 RxPortFifoFull drop frame
+           18 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/12                Receive
+     51226298 Bytes                           655216 Bytes                    
+         5302 Unicast frames                     888 Unicast frames           
+       155054 Multicast frames                   972 Multicast frames         
+       156407 Broadcast frames                   924 Broadcast frames         
+            0 Too old frames                  268680 Unicast bytes            
+            0 Deferred frames                 214580 Multicast bytes          
+            0 MTU exceeded frames             164676 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                1228 65 to 127 byte frames    
+            0 9 collision frames                 497 128 to 255 byte frames   
+            0 10 collision frames                833 256 to 511 byte frames   
+            0 11 collision frames                215 512 to 1023 byte frames  
+            0 12 collision frames                 11 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        34648 64 byte frames                       0 Valid frames, too small  
+       164215 127 byte frames          
+        62468 255 byte frames                      0 Too old frames           
+        46611 511 byte frames                      0 Valid oversize frames    
+         7959 1023 byte frames                     0 System FCS error frames  
+          862 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/13                Receive
+    618097221 Bytes                         94638184 Bytes                    
+       729231 Unicast frames                  570934 Unicast frames           
+       154165 Multicast frames                  1878 Multicast frames         
+       156211 Broadcast frames                  1117 Broadcast frames         
+            0 Too old frames                93878838 Unicast bytes            
+            0 Deferred frames                 397142 Multicast bytes          
+            0 MTU exceeded frames             301180 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames              219676 Minimum size frames      
+            0 8 collision frames              273844 65 to 127 byte frames    
+            0 9 collision frames               35228 128 to 255 byte frames   
+            0 10 collision frames               8730 256 to 511 byte frames   
+            0 11 collision frames               7507 512 to 1023 byte frames  
+            0 12 collision frames              28944 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+       126000 64 byte frames                       0 Valid frames, too small  
+       271795 127 byte frames          
+       204426 255 byte frames                      0 Too old frames           
+        56895 511 byte frames                      0 Valid oversize frames    
+        20884 1023 byte frames                     0 System FCS error frames  
+       359607 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/14                Receive
+    210123695 Bytes                        137631771 Bytes                    
+       301885 Unicast frames                  298558 Unicast frames           
+       154425 Multicast frames                  1602 Multicast frames         
+       156876 Broadcast frames                   440 Broadcast frames         
+            0 Too old frames               136873827 Unicast bytes            
+            0 Deferred frames                 360938 Multicast bytes          
+            0 MTU exceeded frames             141610 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                 299 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames               79829 Minimum size frames      
+            0 8 collision frames              111430 65 to 127 byte frames    
+            0 9 collision frames               25654 128 to 255 byte frames   
+            0 10 collision frames               4738 256 to 511 byte frames   
+            0 11 collision frames               4060 512 to 1023 byte frames  
+            0 12 collision frames              75166 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                 22 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        98793 64 byte frames                       0 Valid frames, too small  
+       253091 127 byte frames          
+       108571 255 byte frames                      0 Too old frames           
+        51246 511 byte frames                      0 Valid oversize frames    
+        12395 1023 byte frames                     0 System FCS error frames  
+        88605 1518 byte frames                     0 RxPortFifoFull drop frame
+          485 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/15                Receive
+    158785476 Bytes                         63644309 Bytes                    
+       202288 Unicast frames                  169239 Unicast frames           
+       153915 Multicast frames                  2139 Multicast frames         
+       156242 Broadcast frames                  1088 Broadcast frames         
+            0 Too old frames                62837063 Unicast bytes            
+            0 Deferred frames                 412048 Multicast bytes          
+            0 MTU exceeded frames             185230 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames               54602 Minimum size frames      
+            0 8 collision frames               16318 65 to 127 byte frames    
+            0 9 collision frames               63700 128 to 255 byte frames   
+            0 10 collision frames               5332 256 to 511 byte frames   
+            0 11 collision frames               3226 512 to 1023 byte frames  
+            0 12 collision frames              29288 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        73427 64 byte frames                       0 Valid frames, too small  
+       197086 127 byte frames          
+       122060 255 byte frames                      0 Too old frames           
+        50304 511 byte frames                      0 Valid oversize frames    
+        10799 1023 byte frames                     0 System FCS error frames  
+        58769 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/16                Receive
+     51240011 Bytes                           725335 Bytes                    
+         5273 Unicast frames                     856 Unicast frames           
+       155058 Multicast frames                   966 Multicast frames         
+       156461 Broadcast frames                   870 Broadcast frames         
+            0 Too old frames                  252078 Unicast bytes            
+            0 Deferred frames                 227277 Multicast bytes          
+            0 MTU exceeded frames             239060 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                1155 65 to 127 byte frames    
+            0 9 collision frames                 485 128 to 255 byte frames   
+            0 10 collision frames                485 256 to 511 byte frames   
+            0 11 collision frames                563 512 to 1023 byte frames  
+            0 12 collision frames                  4 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        34648 64 byte frames                       0 Valid frames, too small  
+       164180 127 byte frames          
+        62458 255 byte frames                      0 Too old frames           
+        46950 511 byte frames                      0 Valid oversize frames    
+         7613 1023 byte frames                     0 System FCS error frames  
+          943 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/17                Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/18                Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/19                Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/20                Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/21                Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/22                Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/23                Receive
+     51083959 Bytes                           615805 Bytes                    
+         5057 Unicast frames                     606 Unicast frames           
+       155055 Multicast frames                   964 Multicast frames         
+       156974 Broadcast frames                   355 Broadcast frames         
+            0 Too old frames                  223441 Unicast bytes            
+            0 Deferred frames                 243742 Multicast bytes          
+            0 MTU exceeded frames             131882 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                 201 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                 201 Minimum size frames      
+            0 8 collision frames                 426 65 to 127 byte frames    
+            0 9 collision frames                 483 128 to 255 byte frames   
+            0 10 collision frames                832 256 to 511 byte frames   
+            0 11 collision frames                  1 512 to 1023 byte frames  
+            0 12 collision frames                179 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  4 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+        34648 64 byte frames                       0 Valid frames, too small  
+       164717 127 byte frames          
+        62458 255 byte frames                      0 Too old frames           
+        46564 511 byte frames                      0 Valid oversize frames    
+         7925 1023 byte frames                     0 System FCS error frames  
+          757 1518 byte frames                     0 RxPortFifoFull drop frame
+           17 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit FastEthernet0/24                Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit GigabitEthernet0/1              Receive
+    950148419 Bytes                       2182894584 Bytes                    
+      3006880 Unicast frames                27499597 Unicast frames           
+         7587 Multicast frames                210275 Multicast frames         
+        14877 Broadcast frames                402277 Broadcast frames         
+            0 Too old frames              1989876347 Unicast bytes            
+            0 Deferred frames               37622904 Multicast bytes          
+            0 MTU exceeded frames           43028685 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                4280 Minimum size frames      
+            0 8 collision frames             2526904 65 to 127 byte frames    
+            0 9 collision frames             1415027 128 to 255 byte frames   
+            0 10 collision frames             300418 256 to 511 byte frames   
+            0 11 collision frames             186997 512 to 1023 byte frames  
+            0 12 collision frames            2698096 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames           20980427 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+         3727 64 byte frames                       0 Valid frames, too small  
+      1125682 127 byte frames          
+      1314630 255 byte frames                      0 Too old frames           
+       124997 511 byte frames                      0 Valid oversize frames    
+        84802 1023 byte frames                     0 System FCS error frames  
+       219500 1518 byte frames                     0 RxPortFifoFull drop frame
+       156006 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+
+
+     Transmit GigabitEthernet0/2              Receive
+            0 Bytes                                0 Bytes                    
+            0 Unicast frames                       0 Unicast frames           
+            0 Multicast frames                     0 Multicast frames         
+            0 Broadcast frames                     0 Broadcast frames         
+            0 Too old frames                       0 Unicast bytes            
+            0 Deferred frames                      0 Multicast bytes          
+            0 MTU exceeded frames                  0 Broadcast bytes          
+            0 1 collision frames                   0 Alignment errors         
+            0 2 collision frames                   0 FCS errors               
+            0 3 collision frames                   0 Oversize frames          
+            0 4 collision frames                   0 Undersize frames         
+            0 5 collision frames                   0 Collision fragments      
+            0 6 collision frames       
+            0 7 collision frames                   0 Minimum size frames      
+            0 8 collision frames                   0 65 to 127 byte frames    
+            0 9 collision frames                   0 128 to 255 byte frames   
+            0 10 collision frames                  0 256 to 511 byte frames   
+            0 11 collision frames                  0 512 to 1023 byte frames  
+            0 12 collision frames                  0 1024 to 1518 byte frames 
+            0 13 collision frames                  0 Overrun frames           
+            0 14 collision frames                  0 Pause frames             
+            0 15 collision frames      
+            0 Excessive collisions                 0 Symbol error frames      
+            0 Late collisions                      0 Invalid frames, too large
+            0 VLAN discard frames                  0 Valid frames, too large  
+            0 Excess defer frames                  0 Invalid frames, too small
+            0 64 byte frames                       0 Valid frames, too small  
+            0 127 byte frames          
+            0 255 byte frames                      0 Too old frames           
+            0 511 byte frames                      0 Valid oversize frames    
+            0 1023 byte frames                     0 System FCS error frames  
+            0 1518 byte frames                     0 RxPortFifoFull drop frame
+            0 Too large frames         
+            0 Good (1 coll) frames     
+            0 Good (>1 coll) frames    
+ASIC    Rxbiterr   Rxunder    Fwdctfix   Txbuflos   Rxbufloc   Rxbufdrain
+-------------------------------------------------------------------------
+ASIC0     0          0          0          0          0          0         
+
+HOL Fix Counts
+--------------
+No Fixes:          0 Added:          0 In Use:          0 Both:          0
+
+CPU Heartbeat Statistics
+
+Tx Success Tx Fail    1st Thr    2nd Thr    Unthr      RetryCtMax
+---------- ---------- ---------- ---------- ---------- ----------
+    573335          0          0          0          0          1
+
+Rx Delay
+         0          1          2          3          4 
+---------- ---------- ---------- ---------- ---------- 
+    573335          0          0          0          0 
+
+AddlDelay AdvanceCnt
+---------- ----------
+         0          0
+
+Rx Retries by RetryCount
+         0          1          2          3          4          5          6 
+---------- ---------- ---------- ---------- ---------- ---------- ---------- 
+    573335          0          0          0          0          0          0 
+
+         7          8          9 
+---------- ---------- ---------- 
+         0          0          0 
+
+AddlRetry
+----------
+         0
+
+
+cpu-queue-frames  retrieved  dropped    invalid    hol-block  stray
+----------------- ---------- ---------- ---------- ---------- ----------
+rpc               0          0          0          0          0         
+stp               13922      0          0          0          0         
+ipc               0          0          0          0          0         
+routing protocol  240580     0          0          0          0         
+L2 protocol       15353      0          0          0          0         
+remote console    0          0          0          0          0         
+sw forwarding     4934       0          0          0          0         
+host              11082      0          0          0          0         
+broadcast         277576     0          0          0          0         
+cbt-to-spt        0          0          0          0          0         
+igmp snooping     46110      0          0          0          0         
+icmp              0          0          0          0          0         
+logging           0          0          0          0          0         
+rpf-fail          0          0          0          0          0         
+dstats            0          0          0          0          0         
+cpu heartbeat     573335     0          0          0          0         
+
+cpu-queue         static inuse static added
+----------------- ------------ ------------
+rpc               0            0           
+stp               0            0           
+ipc               0            0           
+routing protocol  0            0           
+L2 protocol       0            0           
+remote console    0            0           
+sw forwarding     0            0           
+host              0            0           
+broadcast         0            0           
+cbt-to-spt        0            0           
+igmp snooping     0            0           
+icmp              0            0           
+logging           0            0           
+rpf-fail          0            0           
+dstats            0            0           
+cpu heartbeat     0            0           
+
+Supervisor ASIC receive-queue parameters
+----------------------------------------
+ queue 0 maxrecevsize 0 pakhead 0 paktail 0
+ queue 1 maxrecevsize 7E0 pakhead 2A15814 paktail 2A15390
+ queue 2 maxrecevsize 7E0 pakhead 0 paktail 0
+ queue 3 maxrecevsize 7E0 pakhead 3FFCB6C paktail 2AC3730
+ queue 4 maxrecevsize 7E0 pakhead 3203630 paktail 2A1ED18
+ queue 5 maxrecevsize 7E0 pakhead 0 paktail 0
+ queue 6 maxrecevsize 7E0 pakhead 3296680 paktail 2AB9DA8
+ queue 7 maxrecevsize 7E0 pakhead 3265BE0 paktail 2A91498
+ queue 8 maxrecevsize 7E0 pakhead 2A94F4C paktail 3268F18
+ queue 9 maxrecevsize 0 pakhead 0 paktail 0
+ queue A maxrecevsize 7E0 pakhead 2A450C4 paktail 32305A8
+ queue B maxrecevsize 7E0 pakhead 32A13A4 paktail 2AC53D4
+ queue C maxrecevsize 7E0 pakhead 32325D0 paktail 2A48B5C
+ queue D maxrecevsize 0 pakhead 0 paktail 0
+ queue E maxrecevsize 0 pakhead 0 paktail 0
+ queue F maxrecevsize 7E0 pakhead 322D0BC paktail 2A426C8
+Supervisor ASIC exception status
+--------------------------------
+Receive overrun    00000000   Transmit overrun 00000000
+FrameSignatureErr  00000000   MicInitialize    00000000
+BadFrameErr        00000000   LenExceededErr   00000000
+BadJumboSegments   00000000
+
+Supervisor ASIC Mic Registers
+------------------------------
+MicDirectPollInfo     		80000200
+MicIndicationsReceived		00000000
+MicInterruptsReceived		00000000
+MicPcsInfo           		0000001F
+MicPlbMasterConfiguration	00000000
+MicRxFifosAvailable  		00000000
+MicRxFifosReady      		00009DFE
+MicTimeOutPeriod:	FrameTOPeriod: 00000EA6	DirectTOPeriod: 00004000
+MicTransmFramesCopied		00000003
+MicTxFifosAvailable  		00000001
+MicConfiguration:	Conf flag: 00000110	Interrupt Flag: 0000000A
+MicReceiveFifoAssignmen	Queue 0 - 7: 00000000	Queue 8 - 15:00000000
+MicReceiveFramesReady:	FrameAvailable: 00000000	frameAvaiMask: 00000000
+MicException:    
+	Exception_flag	00000000
+	Message-1	00000000
+	Message-2	00000000
+	Message-3	00000000
+MicIntRxFifo:
+	ReadPtr		00000198	WritePtr	00000198
+	WHeadPtr	00000198	TxFifoDepth	C0000800
+MicIntTxFifo:
+	ReadPtr		00000C18	WritePtr	00000C18
+	WHeadPtr	00000C18	TxFifoDepth	C0000800
+MicDecodeInfo:
+Fifo0:	address:	03FF4000 asic_num:	00000100
+Fifo1:	address:	00000000 asic_num:	00000000
+MicTransmitFifoInfo:
+Fifo0:	 StartPtrs:	02D32800	ReadPtr:	02D32F38
+	WritePtrs:	02D32F38	Fifo_Flag:	8A800800
+	Weights:	001E001E
+Fifo1:	 StartPtrs:	02C2D000	ReadPtr:	02C2D100
+	WritePtrs:	02C2D100	Fifo_Flag:	89800400
+	Weights:	000A000A
+MicReceiveFifoInfo:
+Fifo0:	StartPtr:	00000000	ReadPtr:	00000000
+	WritePtrs:	00000000	Fifo_Flag:	00800000
+	writeHeaderPtr:	00000000
+Fifo1:	StartPtr:	02D46800	ReadPtr:	02D46B10
+	WritePtrs:	02D46B10	Fifo_Flag:	89800400
+	writeHeaderPtr:	02D46B10
+Fifo2:	StartPtr:	02D44CD8	ReadPtr:	02D44CD8
+	WritePtrs:	02D44CD8	Fifo_Flag:	82800008
+	writeHeaderPtr:	02D44CD8
+Fifo3:	StartPtr:	02C2CF00	ReadPtr:	02C2CF20
+	WritePtrs:	02C2CF20	Fifo_Flag:	86800080
+	writeHeaderPtr:	02C2CF20
+Fifo4:	StartPtr:	02D32400	ReadPtr:	02D325C8
+	WritePtrs:	02D325C8	Fifo_Flag:	88800200
+	writeHeaderPtr:	02D325C8
+Fifo5:	StartPtr:	02D46750	ReadPtr:	02D46750
+	WritePtrs:	02D46750	Fifo_Flag:	82800008
+	writeHeaderPtr:	02D46750
+Fifo6:	StartPtr:	02E0D000	ReadPtr:	02E0D030
+	WritePtrs:	02E0D030	Fifo_Flag:	88800200
+	writeHeaderPtr:	02E0D030
+Fifo7:	StartPtr:	02DC5600	ReadPtr:	02DC5650
+	WritePtrs:	02DC5650	Fifo_Flag:	88800200
+	writeHeaderPtr:	02DC5650
+Fifo8:	StartPtr:	02DFA900	ReadPtr:	02DFA940
+	WritePtrs:	02DFA940	Fifo_Flag:	87800100
+	writeHeaderPtr:	02DFA940
+Fifo9:	StartPtr:	00000000	ReadPtr:	00000000
+	WritePtrs:	00000000	Fifo_Flag:	00800000
+	writeHeaderPtr:	00000000
+Fifo10:	StartPtr:	02D32280	ReadPtr:	02D322F0
+	WritePtrs:	02D322F0	Fifo_Flag:	86800080
+	writeHeaderPtr:	02D322F0
+Fifo11:	StartPtr:	02D32780	ReadPtr:	02D32780
+	WritePtrs:	02D32780	Fifo_Flag:	84800020
+	writeHeaderPtr:	02D32780
+Fifo12:	StartPtr:	02D32680	ReadPtr:	02D32680
+	WritePtrs:	02D32680	Fifo_Flag:	86800080
+	writeHeaderPtr:	02D32680
+Fifo13:	StartPtr:	00000000	ReadPtr:	00000000
+	WritePtrs:	00000000	Fifo_Flag:	00800000
+	writeHeaderPtr:	00000000
+Fifo14:	StartPtr:	00000000	ReadPtr:	00000000
+	WritePtrs:	00000000	Fifo_Flag:	00800000
+	writeHeaderPtr:	00000000
+Fifo15:	StartPtr:	02C2CE00	ReadPtr:	02C2CE18
+	WritePtrs:	02C2CE18	Fifo_Flag:	84800020
+	writeHeaderPtr:	02C2CE18
+
+
+===========================================================
+Complete Board Id:0x0056
+===========================================================
+
+------------------ show user ------------------
+
+
+    Line       User       Host(s)              Idle       Location
+*  1 vty 0     admin      idle                 00:00:01 172.20.128.12
+
+  Interface    User               Mode         Idle     Peer Address
+
+
+------------------ show file systems ------------------
+
+
+File Systems:
+
+     Size(b)     Free(b)      Type  Flags  Prefixes
+*     32514048      12993536     flash     rw   flash:
+           -           -    opaque     rw   vb:
+           -           -    opaque     ro   bs:
+           -           -    opaque     rw   system:
+           -           -    opaque     rw   tmpsys:
+         65536         52171     nvram     rw   nvram:
+           -           -    opaque     ro   xmodem:
+           -           -    opaque     ro   ymodem:
+           -           -    opaque     rw   null:
+           -           -    opaque     ro   tar:
+           -           -   network     rw   tftp:
+           -           -   network     rw   rcp:
+           -           -   network     rw   http:
+           -           -   network     rw   ftp:
+           -           -   network     rw   scp:
+           -           -   network     rw   https:
+           -           -    opaque     ro   cns:
+
+
+------------------ show file descriptors ------------------
+
+
+File Descriptors:
+
+  No open file descriptors
+
+
+------------------ show flash: ------------------
+
+
+
+Directory of flash:/
+
+    3  -rwx    11787969   Apr 8 2014 11:52:29 +03:00  c2960-lanbasek9-mz.150-2.SE5.bin
+    4  -rwx         676   Mar 1 1993 03:51:16 +03:00  vlan.dat.renamed
+    5  -rwx        1236   Mar 1 1993 03:00:41 +03:00  vlan.dat
+    6  drwx         192   Mar 1 1993 03:06:10 +03:00  c2960-lanbase-mz.122-25.SEE3
+  621  -rwx        5160   Mar 1 1993 11:13:10 +03:00  config-2015-08-28
+  622  -rwx        2074   Jul 2 2021 11:02:15 +03:00  private-config.text
+  623  -rwx        2072   Mar 1 1993 03:00:47 +03:00  multiple-fs
+  624  -rwx        9191   Jul 2 2021 11:02:15 +03:00  config.text
+
+32514048 bytes total (12993536 bytes free)
+
+------------------ dir nvram: ------------------
+
+
+Directory of nvram:/
+
+   51  -rw-        9191                    <no date>  startup-config
+   52  ----        2074                    <no date>  private-config
+    1  ----          52                    <no date>  persistent-data
+    2  -rw-           0                    <no date>  ifIndex-table
+
+65536 bytes total (52171 bytes free)
+
+------------------ show data-corruption ------------------
+
+
+No data inconsistency errors have been recorded.
+
+
+------------------ show memory statistics ------------------
+
+
+                Head    Total(b)     Used(b)     Free(b)   Lowest(b)  Largest(b)
+Processor    26B7714    22308940    17431524     4877416     4144112     4709416
+      I/O    2C00000     4194304     2373032     1821272     1753764     1819952
+Driver te    1840000     1048576          44     1048532     1048532     1048532
+
+------------------ show process memory ------------------
+
+
+Processor Pool Total:   22308940 Used:   17431420 Free:    4877520
+      I/O Pool Total:    4194304 Used:    2372932 Free:    1821372
+Driver te Pool Total:    1048576 Used:         40 Free:    1048536
+
+ PID TTY  Allocated      Freed    Holding    Getbufs    Retbufs Process
+   0   0   23425124    6845364   13589352          0          0 *Init*          
+   0   0      12180     665460      12180          0          0 *Sched*         
+   0   0   48862764   47708524     858816    3604863    1182914 *Dead*          
+   0   0          0          0     394440          0          0 *MallocLite*    
+   1   0       9632       4588      13748          0          0 Chunk Manager   
+   2   0        232        232       4160          0          0 Load Meter      
+   3   0          0          0      10032          0          0 Connection Mgr  
+   4   0       4652        232      11632          0          0 Check heaps     
+   5   0    1668096    1922924      42192    1087296    1218507 Pool Manager    
+   6   0          0          0       7160          0          0 DiscardQ Backgro
+   7   0        232        232       7160          0          0 Timers          
+   8   0          0          0       4160          0          0 WATCH_AFS       
+   9   0    3727808    3743872       7768          0          0 crypto sw pk pro
+  10   0          0          0      25160          0          0 Crash writer    
+  11   0        340          0       7500          0          0 Exception contro
+  12   0     263168     226468      43860          0          0 ARP Input       
+  13   0       8516       8516       7160          0          0 ARP Background  
+  14   0          0          0       7160          0          0 AAA_SERVER_DEADT
+  15   0          0          0      13160          0          0 Policy Manager  
+  16   0      22396       5484      24072          0          0 Entity MIB API  
+  17   0          0          0       7160          0          0 IFS Agent Manage
+  18   0          0          0       7160          0          0 IPC Event Notifi
+  19   0          0          0       7160          0          0 IPC Mcast Pendin
+  20   0          0          0       7220          0          0 IPC Dynamic Cach
+  21   0          0          0       7160          0          0 IPC Session Serv
+  22   0          0          0       7160          0          0 IPC Zone Manager
+  23   0          0          0       7160          0          0 IPC Periodic Tim
+  24   0          0          0       7160          0          0 IPC Deferred Por
+  25   0          0          0       7160          0          0 IPC Process leve
+  26   0       1688          0       8848          0          0 IPC Seat Manager
+  27   0          0          0       7160          0          0 IPC Check Queue 
+  28   0          0          0       7160          0          0 IPC Seat RX Cont
+  29   0          0          0       7160          0          0 IPC Seat TX Cont
+  30   0          0          0       7160          0          0 IPC Keep Alive M
+  31   0          0          0       7160          0          0 IPC Loadometer  
+  32   0      77616      77616       7160          0          0 PrstVbl         
+  33   0        232        232      13160          0          0 XML Proxy Client
+  34   0          0          0       7160          0          0 Dynamic ARP Insp
+  35   0          0          0       7160          0          0 ARP Snoop       
+  36   0        232        232       7160          0          0 SMART           
+  37   0        232        232       7160          0          0 GraphIt         
+  38   0          0          0       7224          0          0 Critical Bkgnd  
+  39   0      35540        568      15912          0          0 Net Background  
+  40   0          0          0      13160          0          0 IDB Work        
+  41   0      26260        232      13160      15228          0 Logger          
+  42   0        232        232       7160          0          0 TTY Background  
+  43   0      94988      84496      57696          0          0 IF-MGR control p
+  44   0          0          0       7160          0          0 IF-MGR event pro
+  45   0          0          0       7160          0          0 Net Input       
+  46   0        232        232       7160          0          0 Compute load avg
+  47   0          0          0       7160          0          0 Per-minute Jobs 
+  48   0      35892      27456      18596          0          0 Per-Second Jobs 
+  49   0          0          0       7160          0          0 AggMgr Process  
+  50   0          0        304       7160          0          0 Transport Port A
+  51   0          0          0       7160          0          0 HC Counter Timer
+  52   0          0          0       7160          0          0 SFF8472         
+  53   0        232        232       7160          0          0 DownWhenLooped  
+  54   0          0          0       7160          0          0 HULC ACL Tcam Me
+  55   0          0          0       7160          0          0 HRPC lpip reques
+  56   0        232        232       7160          0          0 HLPIP Sync Proce
+  57   0          0          0       7160          0          0 HRPC EnergyWise 
+  58   0          0          0       7160          0          0 HRPC actual powe
+  59   0          0          0       7160          0          0 PSP Timer       
+  60   0          0          0       7160          0          0 HULC QM Tcam Mem
+  61   0     908904     908904       7160          0          0 Authenticate Pro
+  62   0          0          0       7160          0          0 HULC PBR Tcam Me
+  63   0     368252     841256     377800          0          0 EEM ED ND       
+  64   0       4556          0      14716          0          0 EEM ED Identity 
+  65   0       4556          0      14716          0          0 EEM ED MAT      
+  66   0       7784          0       7784          0          0 HL2MCM          
+  67   0       7784          0       7784          0          0 HL2MCM          
+  68   0          0          0       7160          0          0 HRPC asic-stats 
+  69   0          0          0       4160          0          0 HRPC hsm request
+  70   0       2044          0      15204          0          0 Stack Mgr       
+  71   0     513884     139708     283240          0          0 Stack Mgr Notifi
+  72   0       5304        232      12232          0          0 Fifo Error Detec
+  73   0       1832       1832       4160          0          0 Adjust Regions  
+  74   0          0          0       7160          0          0 hrpc -> response
+  75   0          0          0       7160          0          0 hrpc -> request 
+  76   0      82996      10460       7160          0          0 hrpc <- response
+  77   0          0          0       7160          0          0 HRPC hcomp reque
+  78   0        560        232       7160          0          0 HULC Device Mana
+  79   0         68         68       7160          0          0 HRPC hdm non blo
+  80   0        176        176       7160          0          0 HRPC hdm blockin
+  81   0          0          0      13160          0          0 HIPC bkgrd proce
+  82   0        232       2032       7160          0          0 Hulc Port-Securi
+  83   0          0          0       7160          0          0 HRPC hpsecure re
+  84   0          0          0       7160          0          0 HRPC hlfm reques
+  85   0      70216        232      50056          0          0 HLFM address lea
+  86   0        232        232       7160          0          0 HLFM aging proce
+  87   0        232        232       7160          0          0 HLFM address ret
+  88   0          0          0       7160          0          0 HRPC hulc misc r
+  89   0          0          0       7160          0          0 HULC Tcam Memory
+  90   0          0          0      13160          0          0 HVLAN main bkgrd
+  91   0        232        232       7160          0          0 HVLAN Mapped Vla
+  92   0        232        232       7160          0          0 Vlan shutdown Pr
+  93   0          0          0       7160          0          0 HRPC vlan reques
+  94   0          0          0       7160          0          0 HULC VLAN REF Ba
+  95   0          0          0       7160          0          0 HRPC ilp request
+  96   0          0          0       7160          0          0 HULC PM Vector P
+  97   0          0          0       7160          0          0 HPM Msg Retry Pr
+  98   0     154760      61612       8016          0          0 SpanTree Helper 
+  99   0     382048     331704      27856          0          0 hpm main process
+ 100   0        232        232       7160          0          0 HPM Stack Sync P
+ 101   0          0          0      25160          0          0 HRPC pm request 
+ 102   0        232        232       7160          0          0 hpm counter proc
+ 103   0          0          0       7160          0          0 HRPC pm-counters
+ 104   0          0          0       7172          0          0 hpm vp events ca
+ 105   0          0          0       7160          0          0 HRPC hcmp reques
+ 106   0          0          0       7160          0          0 HACL Queue Proce
+ 107   0          0          0       7160          0          0 HRPC acl request
+ 108   0        232       5180      61160          0          0 HACL Acl Manager
+ 109   0          0          0       7160          0          0 HRPC backup inte
+ 110   1    1973660    1890512      95324          0          0 SSH Process     
+ 111   0          0          0       7160          0          0 HRPC cdp request
+ 112   0          0          0       7160          0          0 HULC CISP Proces
+ 113   0          0          0       7160          0          0 HRPC lldp reques
+ 114   0          0          0       7160          0          0 HRPC dot1x reque
+ 115   0      10044          0      17204          0          0 HULC DOT1X Proce
+ 116   0          0          0       4160          0          0 HRPC system mtu 
+ 117   0          0          0       7160          0          0 SMI MSG Retry Pr
+ 118   0          0          0      10160          0          0 HRPC Smart Insta
+ 119   0          0          0       7160          0          0 HRPC sdm request
+ 120   0        232        232       7160          0          0 Hulc Storm Contr
+ 121   0        232        232       7160          0          0 HSTP Sync Proces
+ 122   0          0          0       7160          0          0 HRPC stp_cli req
+ 123   0          0          0       7160          0          0 HRPC stp_state_s
+ 124   0        232        232       7160          0          0 S/W Bridge Proce
+ 125   0          0          0       7160          0          0 HRPC hudld reque
+ 126   0          0          0       7160          0          0 HRPC vqpc reques
+ 127   0          0          0       7160          0          0 HRPC aim request
+ 128   0          0          0      13160          0          0 HCEF ADJ Refresh
+ 129   0          0          0       7160          0          0 HRPC hled reques
+ 130   0        232        232      10160          0          0 Hulc LED Process
+ 131   0          0          0      13160          0          0 HL3U bkgrd proce
+ 132   0          0          0       7160          0          0 HRPC hl3u reques
+ 133   0          0        204      61160          0          0 HL3U PBR bkgrd p
+ 134   0          0          0       7160          0          0 HL3U PBR n-h res
+ 135   0          0          0       7160          0          0 HRPC dtp request
+ 136   0          0          0       7160          0          0 HRPC show_forwar
+ 137   0          0          0       7160          0          0 HRPC snmp reques
+ 138   0          0          0       7160          0          0 HULC SNMP Proces
+ 139   0  232663468  232633768      10832      15228          0 HQM Stack Proces
+ 140   0  108524904  108515960      61428       5076          0 HRPC qos request
+ 141   0          0          0       7160          0          0 HRPC span reques
+ 142   0       8372       8372       7160          0          0 HRPC system post
+ 143   0          0          0       7160          0          0 Hulc Reload Mana
+ 144   0          0          0       7160          0          0 HRPC hrcli-event
+ 145   0        232        232      10160          0          0 image mgr       
+ 146   0        232        232       7160          0          0 PI MATM Aging Pr
+ 147   0      71328          0      78488          0          0 Switch Backup In
+ 148   0          0          0       7160          0          0 MMN bkgrd proces
+ 149   0     650280     175868     476436          0          0 Auth Manager    
+ 150   0          0          0       7160          0          0 AUTH POLICY Fram
+ 151   0        232        232       7160          0          0 Dot1x Mgr Proces
+ 152   0      44652      12544      15460          0          0 802.1x switch   
+ 153   0          0          0       7160          0          0 802.1x Webauth F
+ 154   0      76676      53344      13452          0          0 DTP Protocol    
+ 155   0          0          0       7160          0          0 EAP Framework   
+ 156   0          0          0       7160          0          0 EAP Test        
+ 157   0          0          0       7160          0          0 HRPC dai request
+ 158   0          0          0       4160          0          0 HULC DAI Process
+ 159   0          0          0       7160          0          0 HRPC ip device t
+ 160   0          0          0       7160          0          0 HRPC ip source g
+ 161   0          0          0       7160          0          0 HULC IP Source g
+ 162   0        524        232       7452          0          0 UDLD            
+ 163   0        296          0       7456          0          0 Port-Security   
+ 164   0        232        232      10160          0          0 IP Host Track Pr
+ 165   0          0          0       7160          0          0 Link State Group
+ 166   0          0      27088       7160          0          0 VMATM Callback  
+ 167   0        232        232       7160          0          0 CMD HANDLER     
+ 168   0        216          0      13376          0          0 CEF switching ba
+ 169   0        216          0       4376          0          0 ADJ NSF process 
+ 170   0          0          0       7160          0          0 HRPC sisf reques
+ 171   0          0          0       7160          0          0 HULC SISF Proces
+ 172   0          0          0       7160          0          0 HULC SISF Source
+ 173   0      16816        232      23744          0          0 AAA Server      
+ 174   0          0          0       7160          0          0 AAA ACCT Proc   
+ 175   0      49352          0      56512          0          0 ACCT Periodic Pr
+ 176   0          0          0       7172          0          0 AAA System Acct 
+ 177   0          0          0       7160          0          0 Auth-proxy AAA B
+ 178   0          0          0       7160          0          0 IP Admin SM Proc
+ 179   0     807504       5452     364196          0          0 CDP Protocol    
+ 180   0          0      58900       7032          0          0 SpanTree Flush  
+ 181   0          0          0       7160          0          0 Critical Auth   
+ 182   0        232        232       7160          0          0 AAA Dictionary R
+ 183   0          0          0       7160          0          0 DHCP Snooping   
+ 184   0          0          0       7160          0          0 DHCP Snooping db
+ 185   0       2584          0      15744          0          0 IP ARP Adjacency
+ 186   0      33012          0      40172          0          0 IP ARP Retry Age
+ 187   0      17976          0      14444          0          0 IP Input        
+ 188   0          0          0       7160          0          0 ICMP event handl
+ 189   0        232        232      10160          0          0 IP ARP Track    
+ 190   0          0          0       7160          0          0 IPv6 ping proces
+ 192   0      13204        864      38420          0          0 SMI Director DB 
+ 193   0          0     141836       7160          0          0 SMI CDP Update H
+ 194   0        680          0      25840          0          0 SMI Backup Proce
+ 195   0          0          0       7032          0          0 HCMP sync proces
+ 196   0        412          0      13572          0          0 SMI IBC client p
+ 197   0       4884        232      17812          0          0 SMI IBC Download
+ 198   0     465748        232       7376          0          0 Spanning Tree   
+ 199   0       5044          0      12204          0          0 Spanning Tree St
+ 200   0        232        232       7160          0          0 Ethchnl         
+ 201   0          0          0      13160          0          0 TCP Timer       
+ 202   0     209416          0      15068          0          0 TCP Protocols   
+ 203   0          0          0       7160          0          0 Socket Timers   
+ 204   0      12164       9984      12036          0          0 HTTP CORE       
+ 205   0        232        232       7160          0          0 Cluster L2      
+ 206   0          0          0       7160          0          0 Cluster RARP    
+ 207   0     108896     108360       7696          0          0 Cluster Base    
+ 208   0       6188         68      19280          0          0 CEF background p
+ 209   0        216          0      13420          0          0 fib_fib_bfd_sb e
+ 210   0          0          0      10160          0          0 IP IRDP         
+ 211   0          0          0       7160          0          0 RARP Input      
+ 212   0        448        232       7376          0          0 Dot1x Supplicant
+ 213   0        448        232       7376          0          0 Dot1x Supplicant
+ 214   0        448        232       7376          0          0 Dot1x Supplicant
+ 215   0          0          0       7160          0          0 MAB Framework   
+ 216   0          0          0       7160          0          0 HRPC dhcp snoopi
+ 217   0          0          0       7160          0          0 HULC DHCP Snoopi
+ 218   0      50772     308616      18352          0          0 IGMPSN L2MCM    
+ 219   0          0          0       7160          0          0 IGMPSN MRD      
+ 220   0          0          0       7160          0          0 IGMPSN          
+ 221   0          0          0       7160          0          0 IGMPQR          
+ 222   0      14800        232      11696          0          0 L2TRACE SERVER  
+ 223   0      50488     299080      19396          0          0 MLDSN L2MCM     
+ 224   0          0          0       7160          0          0 MRD             
+ 225   0          0          0       7160          0          0 MLD_SNOOP       
+ 226   0          0          0      13160          0          0 Routing Topology
+ 227   0      23120       3944      19244          0          0 CEF: IPv4 proces
+ 228   0        216          0       7376          0          0 ADJ background  
+ 229   0        216          0      13376          0          0 ADJ resolve proc
+ 230   0       1120          0      14280          0          0 IP RIB Update   
+ 231   0          0          0       7160          0          0 HRPC hl2mcm igmp
+ 232   0          0          0       7160          0          0 HRPC hl2mcm mlds
+ 233   0        232        232      10160          0          0 static          
+ 234   0          0          0      10160          0          0 IPv6 RIB Event H
+ 235   0     230100     230100       7160          0          0 QoS stats proces
+ 236   0          0          0       7160          0          0 SNMP Timers     
+ 237   0       1936        232       8864          0          0 TPLUS           
+ 239   0          0          0       7160          0          0 EPM MAIN PROCESS
+ 240   0        232        232       7160          0          0 AAA Cached Serve
+ 241   0       3680       3680       7160          0          0 LOCAL AAA       
+ 242   0        232        232       7160          0          0 ENABLE AAA      
+ 243   0        232        232       7160          0          0 LINE AAA        
+ 244   0       1936        232       8864          0          0 LDAP process    
+ 246   0        216          0      13376          0          0 Collection proce
+ 247   0     226072     224696       8536          0          0 NIST rng proc   
+ 248   0          0          0       7160          0          0 HRPC x_setup req
+ 249   0          0          0       7160          0          0 crypto engine pr
+ 250   0          0          0      13160          0          0 encrypt proc    
+ 251   0     221304     185600      48932          0          0 Crypto CA       
+ 252   0          0          0      13160          0          0 Crypto PKI-CRL  
+ 253   0       4884        232      11812          0          0 VTP Trap Process
+ 254   0        232        232      25160          0          0 ASP Process Crea
+ 255   0        232        232       7160          0          0 DHCP Security He
+ 256   0          0          0       7160          0          0 HCD Process     
+ 257   0          0          0       7160          0          0 HRPC cable diagn
+ 259   0      79476     147156      15976          0          0 PM Callback     
+ 260   0        232        232       7160          0          0 dhcp snooping sw
+ 261   0          0        220       7160          0          0 DiagCard1/-1    
+ 262   0      10892      56076       7160          0          0 AAA SEND STOP EV
+ 263   0          0          0      13160          0          0 Test AAA Client 
+ 264   0          0          0       7160          0          0 Syslog Traps    
+ 266   0        216          0       7376          0          0 Online Diag EEM 
+ 267   0      85176          0      92336          0          0 EEM Server      
+ 268   0      11476       1720      16924          0          0 EEM Policy Direc
+ 270   0       4556          0      14716          0          0 EEM ED OIR      
+ 271   0       4556          0      14776          0          0 EEM ED Timer    
+ 272   0      15292      15292      13160          0          0 Syslog          
+ 273   0        232        232       4160          0          0 STP FAST TRANSIT
+ 274   0        232        232       4160          0          0 CSRT RAPID TRANS
+ 275   0      63764      14372      59556          0          0 Call Home proces
+ 276   0       4556          0      14716          0          0 EEM ED Test     
+ 277   0       4556          0      14716          0          0 EEM ED Config   
+ 278   0       4556          0      14716          0          0 EEM ED Env      
+ 279   0       4556          0      14716          0          0 EM ED GOLD      
+ 280   0     111876      88896      17084       2340          0 VLAN Manager    
+ 281   0          0          0       7160          0          0 Call Home Timer 
+ 282   0       9040          0      15636          0          0 SSH Event handle
+ 283   0    1593872    1582904      24152          0          0 IP SNMP         
+ 284   0    2981220          0      13184          0          0 PDU DISPATCHER  
+ 285   0   14023536   16988556      29384          0          0 SNMP ENGINE     
+ 286   0       1156        232      14108          0          0 IP SNMPV6       
+ 287   0          0          0      13184          0          0 SNMP ConfCopyPro
+ 288   0     219108       4408      30664          0          0 SNMP Traps      
+ 290   0     605972      17372      44592          0          0 LLDP Protocol   
+ 291   0      22604      19156      16608          0          0 NTP             
+                                 19802312 Total
+
+------------------ show process cpu ------------------
+
+
+CPU utilization for five seconds: 5%/0%; one minute: 8%; five minutes: 8%
+ PID Runtime(ms)     Invoked      uSecs   5Sec   1Min   5Min TTY Process 
+   1           0          11          0  0.00%  0.00%  0.00%   0 Chunk Manager    
+   2           8        5758          1  0.00%  0.00%  0.00%   0 Load Meter       
+   3           0           1          0  0.00%  0.00%  0.00%   0 Connection Mgr   
+   4      230101       12289      18724  0.00%  0.73%  0.71%   0 Check heaps      
+   5           0         481          0  0.00%  0.00%  0.00%   0 Pool Manager     
+   6           0           1          0  0.00%  0.00%  0.00%   0 DiscardQ Backgro 
+   7           0           2          0  0.00%  0.00%  0.00%   0 Timers           
+   8          16        1181         13  0.00%  0.00%  0.00%   0 WATCH_AFS        
+   9       20428        1273      16047  0.00%  0.00%  0.00%   0 crypto sw pk pro 
+  10           0           1          0  0.00%  0.00%  0.00%   0 Crash writer     
+  11           0           1          0  0.00%  0.00%  0.00%   0 Exception contro 
+  12         490        1768        277  0.00%  0.00%  0.00%   0 ARP Input        
+  13          40       29931          1  0.00%  0.00%  0.00%   0 ARP Background   
+  14           0           1          0  0.00%  0.00%  0.00%   0 AAA_SERVER_DEADT 
+  15           0           1          0  0.00%  0.00%  0.00%   0 Policy Manager   
+  16           8           4       2000  0.00%  0.00%  0.00%   0 Entity MIB API   
+  17           0           1          0  0.00%  0.00%  0.00%   0 IFS Agent Manage 
+  18           0        5755          0  0.00%  0.00%  0.00%   0 IPC Event Notifi 
+  19          17       27991          0  0.00%  0.00%  0.00%   0 IPC Mcast Pendin 
+  20           0         481          0  0.00%  0.00%  0.00%   0 IPC Dynamic Cach 
+  21           0           1          0  0.00%  0.00%  0.00%   0 IPC Session Serv 
+  22           0           1          0  0.00%  0.00%  0.00%   0 IPC Zone Manager 
+  23          24       27991          0  0.00%  0.00%  0.00%   0 IPC Periodic Tim 
+  24          33       27991          1  0.00%  0.00%  0.00%   0 IPC Deferred Por 
+  25           0           1          0  0.00%  0.00%  0.00%   0 IPC Process leve 
+  26           0           1          0  0.00%  0.00%  0.00%   0 IPC Seat Manager 
+  27           0        1647          0  0.00%  0.00%  0.00%   0 IPC Check Queue  
+  28           0           1          0  0.00%  0.00%  0.00%   0 IPC Seat RX Cont 
+  29           0           1          0  0.00%  0.00%  0.00%   0 IPC Seat TX Cont 
+  30           0        2883          0  0.00%  0.00%  0.00%   0 IPC Keep Alive M 
+  31           0        5755          0  0.00%  0.00%  0.00%   0 IPC Loadometer   
+  32          33           4       8250  0.00%  0.00%  0.00%   0 PrstVbl          
+  33           0           2          0  0.00%  0.00%  0.00%   0 XML Proxy Client 
+  34          49       28612          1  0.00%  0.00%  0.00%   0 Dynamic ARP Insp 
+  35           0           1          0  0.00%  0.00%  0.00%   0 ARP Snoop        
+  36           0           2          0  0.00%  0.00%  0.00%   0 SMART            
+  37          25       28785          0  0.00%  0.00%  0.00%   0 GraphIt          
+  38           0           1          0  0.00%  0.00%  0.00%   0 Critical Bkgnd   
+  39        3178       13772        230  0.00%  0.00%  0.00%   0 Net Background   
+  40           0           1          0  0.00%  0.00%  0.00%   0 IDB Work         
+  41           9          46        195  0.00%  0.00%  0.00%   0 Logger           
+  42          42       28581          1  0.00%  0.00%  0.00%   0 TTY Background   
+  43          17           5       3400  0.00%  0.00%  0.00%   0 IF-MGR control p 
+  44           0          31          0  0.00%  0.00%  0.00%   0 IF-MGR event pro 
+  45           0          46          0  0.00%  0.00%  0.00%   0 Net Input        
+  46          68        5759         11  0.00%  0.00%  0.00%   0 Compute load avg 
+  47       12088         962      12565  0.00%  0.04%  0.00%   0 Per-minute Jobs  
+  48          92       28813          3  0.00%  0.00%  0.00%   0 Per-Second Jobs  
+  49           0           1          0  0.00%  0.00%  0.00%   0 AggMgr Process   
+  50           0          24          0  0.00%  0.00%  0.00%   0 Transport Port A 
+  51         103        8617         11  0.00%  0.00%  0.00%   0 HC Counter Timer 
+  52           0           1          0  0.00%  0.00%  0.00%   0 SFF8472          
+  53          58      570136          0  0.00%  0.00%  0.00%   0 DownWhenLooped   
+  54           0           1          0  0.00%  0.00%  0.00%   0 HULC ACL Tcam Me 
+  55           0           1          0  0.00%  0.00%  0.00%   0 HRPC lpip reques 
+  56           0           2          0  0.00%  0.00%  0.00%   0 HLPIP Sync Proce 
+  57           0           1          0  0.00%  0.00%  0.00%   0 HRPC EnergyWise  
+  58           0           1          0  0.00%  0.00%  0.00%   0 HRPC actual powe 
+  59           0         961          0  0.00%  0.00%  0.00%   0 PSP Timer        
+  60           0           1          0  0.00%  0.00%  0.00%   0 HULC QM Tcam Mem 
+  61       44502         390     114107  0.00%  0.10%  0.11%   0 Authenticate Pro 
+  62           0           1          0  0.00%  0.00%  0.00%   0 HULC PBR Tcam Me 
+  63        1340       14474         92  0.00%  0.00%  0.00%   0 EEM ED ND        
+  64           0          23          0  0.00%  0.00%  0.00%   0 EEM ED Identity  
+  65           0          45          0  0.00%  0.00%  0.00%   0 EEM ED MAT       
+  66           0           5          0  0.00%  0.00%  0.00%   0 HL2MCM           
+  67           0           5          0  0.00%  0.00%  0.00%   0 HL2MCM           
+  68           0           1          0  0.00%  0.00%  0.00%   0 HRPC asic-stats  
+  69           0           1          0  0.00%  0.00%  0.00%   0 HRPC hsm request 
+  70           0           7          0  0.00%  0.00%  0.00%   0 Stack Mgr        
+  71         134           8      16750  0.00%  0.00%  0.00%   0 Stack Mgr Notifi 
+  72        3101     1526734          2  0.00%  0.00%  0.00%   0 Fifo Error Detec 
+  73           0           7          0  0.00%  0.00%  0.00%   0 Adjust Regions   
+  74          34       14379          2  0.00%  0.00%  0.00%   0 hrpc -> response 
+  75           0          39          0  0.00%  0.00%  0.00%   0 hrpc -> request  
+  76           0        4824          0  0.00%  0.00%  0.00%   0 hrpc <- response 
+  77           0           1          0  0.00%  0.00%  0.00%   0 HRPC hcomp reque 
+  78           0           3          0  0.00%  0.00%  0.00%   0 HULC Device Mana 
+  79           0           3          0  0.00%  0.00%  0.00%   0 HRPC hdm non blo 
+  80           0           2          0  0.00%  0.00%  0.00%   0 HRPC hdm blockin 
+  81           0        5750          0  0.00%  0.00%  0.00%   0 HIPC bkgrd proce 
+  82          16          41        390  0.00%  0.00%  0.00%   0 Hulc Port-Securi 
+  83           0           1          0  0.00%  0.00%  0.00%   0 HRPC hpsecure re 
+  84           0           1          0  0.00%  0.00%  0.00%   0 HRPC hlfm reques 
+  85        1402      853647          1  0.00%  0.00%  0.00%   0 HLFM address lea 
+  86          33       28586          1  0.00%  0.00%  0.00%   0 HLFM aging proce 
+  87        1274      854823          1  0.00%  0.00%  0.00%   0 HLFM address ret 
+  88           0           1          0  0.00%  0.00%  0.00%   0 HRPC hulc misc r 
+  89         852        2876        296  0.00%  0.00%  0.00%   0 HULC Tcam Memory 
+  90          16        9587          1  0.00%  0.00%  0.00%   0 HVLAN main bkgrd 
+  91           0           2          0  0.00%  0.00%  0.00%   0 HVLAN Mapped Vla 
+  92           0           2          0  0.00%  0.00%  0.00%   0 Vlan shutdown Pr 
+  93           0           3          0  0.00%  0.00%  0.00%   0 HRPC vlan reques 
+  94           0           1          0  0.00%  0.00%  0.00%   0 HULC VLAN REF Ba 
+  95           0           1          0  0.00%  0.00%  0.00%   0 HRPC ilp request 
+  96         288         483        596  0.00%  0.00%  0.00%   0 HULC PM Vector P 
+  97           0           1          0  0.00%  0.00%  0.00%   0 HPM Msg Retry Pr 
+  98          74          24       3083  0.00%  0.00%  0.00%   0 SpanTree Helper  
+  99         343          24      14291  0.00%  0.00%  0.00%   0 hpm main process 
+ 100           0          42          0  0.00%  0.00%  0.00%   0 HPM Stack Sync P 
+ 101           0           1          0  0.00%  0.00%  0.00%   0 HRPC pm request  
+ 102        4090       28786        142  0.00%  0.01%  0.00%   0 hpm counter proc 
+ 103           0           1          0  0.00%  0.00%  0.00%   0 HRPC pm-counters 
+ 104           0           1          0  0.00%  0.00%  0.00%   0 hpm vp events ca 
+ 105           0           1          0  0.00%  0.00%  0.00%   0 HRPC hcmp reques 
+ 106           0           1          0  0.00%  0.00%  0.00%   0 HACL Queue Proce 
+ 107           0           1          0  0.00%  0.00%  0.00%   0 HRPC acl request 
+ 108           0          23          0  0.00%  0.00%  0.00%   0 HACL Acl Manager 
+ 109           0           1          0  0.00%  0.00%  0.00%   0 HRPC backup inte 
+ 110        2173         265       8200  0.00%  0.00%  0.00%   1 SSH Process      
+ 111           0           1          0  0.00%  0.00%  0.00%   0 HRPC cdp request 
+ 112           0           1          0  0.00%  0.00%  0.00%   0 HULC CISP Proces 
+ 113           0           1          0  0.00%  0.00%  0.00%   0 HRPC lldp reques 
+ 114           0           1          0  0.00%  0.00%  0.00%   0 HRPC dot1x reque 
+ 115           0           3          0  0.00%  0.00%  0.00%   0 HULC DOT1X Proce 
+ 116           0           1          0  0.00%  0.00%  0.00%   0 HRPC system mtu  
+ 117           0           1          0  0.00%  0.00%  0.00%   0 SMI MSG Retry Pr 
+ 118           0           1          0  0.00%  0.00%  0.00%   0 HRPC Smart Insta 
+ 119           0           1          0  0.00%  0.00%  0.00%   0 HRPC sdm request 
+ 120         541      142755          3  0.00%  0.01%  0.00%   0 Hulc Storm Contr 
+ 121           0           2          0  0.00%  0.00%  0.00%   0 HSTP Sync Proces 
+ 122           0           1          0  0.00%  0.00%  0.00%   0 HRPC stp_cli req 
+ 123           0           1          0  0.00%  0.00%  0.00%   0 HRPC stp_state_s 
+ 124           8           2       4000  0.00%  0.00%  0.00%   0 S/W Bridge Proce 
+ 125           0           1          0  0.00%  0.00%  0.00%   0 HRPC hudld reque 
+ 126           0           1          0  0.00%  0.00%  0.00%   0 HRPC vqpc reques 
+ 127           0           1          0  0.00%  0.00%  0.00%   0 HRPC aim request 
+ 128           0          15          0  0.00%  0.00%  0.00%   0 HCEF ADJ Refresh 
+ 129           0           1          0  0.00%  0.00%  0.00%   0 HRPC hled reques 
+ 130        8724      718359         12  0.15%  0.15%  0.14%   0 Hulc LED Process 
+ 131         151       21063          7  0.00%  0.00%  0.00%   0 HL3U bkgrd proce 
+ 132           0           1          0  0.00%  0.00%  0.00%   0 HRPC hl3u reques 
+ 133           8        6599          1  0.00%  0.00%  0.00%   0 HL3U PBR bkgrd p 
+ 134           0         240          0  0.00%  0.00%  0.00%   0 HL3U PBR n-h res 
+ 135           0           1          0  0.00%  0.00%  0.00%   0 HRPC dtp request 
+ 136           0           1          0  0.00%  0.00%  0.00%   0 HRPC show_forwar 
+ 137           0           1          0  0.00%  0.00%  0.00%   0 HRPC snmp reques 
+ 138           0           1          0  0.00%  0.00%  0.00%   0 HULC SNMP Proces 
+ 139        6470        5765       1122  0.00%  0.01%  0.00%   0 HQM Stack Proces 
+ 140        2898       11520        251  0.00%  0.00%  0.00%   0 HRPC qos request 
+ 141           0           1          0  0.00%  0.00%  0.00%   0 HRPC span reques 
+ 142          17          27        629  0.00%  0.00%  0.00%   0 HRPC system post 
+ 143           0           1          0  0.00%  0.00%  0.00%   0 Hulc Reload Mana 
+ 144           0           1          0  0.00%  0.00%  0.00%   0 HRPC hrcli-event 
+ 145           0           2          0  0.00%  0.00%  0.00%   0 image mgr        
+ 146         628       28585         21  0.00%  0.00%  0.00%   0 PI MATM Aging Pr 
+ 147           0           2          0  0.00%  0.00%  0.00%   0 Switch Backup In 
+ 148           0         480          0  0.00%  0.00%  0.00%   0 MMN bkgrd proces 
+ 149         339       29851         11  0.00%  0.00%  0.00%   0 Auth Manager     
+ 150           0           1          0  0.00%  0.00%  0.00%   0 AUTH POLICY Fram 
+ 151           8           2       4000  0.00%  0.00%  0.00%   0 Dot1x Mgr Proces 
+ 152         187          26       7192  0.00%  0.00%  0.00%   0 802.1x switch    
+ 153           0           1          0  0.00%  0.00%  0.00%   0 802.1x Webauth F 
+ 154         234        2837         82  0.00%  0.00%  0.00%   0 DTP Protocol     
+ 155           0           1          0  0.00%  0.00%  0.00%   0 EAP Framework    
+ 156           0           1          0  0.00%  0.00%  0.00%   0 EAP Test         
+ 157           0           1          0  0.00%  0.00%  0.00%   0 HRPC dai request 
+ 158           0           1          0  0.00%  0.00%  0.00%   0 HULC DAI Process 
+ 159           0           1          0  0.00%  0.00%  0.00%   0 HRPC ip device t 
+ 160           0           1          0  0.00%  0.00%  0.00%   0 HRPC ip source g 
+ 161           0           1          0  0.00%  0.00%  0.00%   0 HULC IP Source g 
+ 162          65      287563          0  0.00%  0.00%  0.00%   0 UDLD             
+ 163         141        2404         58  0.00%  0.00%  0.00%   0 Port-Security    
+ 164           0           2          0  0.00%  0.00%  0.00%   0 IP Host Track Pr 
+ 165           0           1          0  0.00%  0.00%  0.00%   0 Link State Group 
+ 166         228         106       2150  0.00%  0.00%  0.00%   0 VMATM Callback   
+ 167           0           2          0  0.00%  0.00%  0.00%   0 CMD HANDLER      
+ 168           0           2          0  0.00%  0.00%  0.00%   0 CEF switching ba 
+ 169           0           1          0  0.00%  0.00%  0.00%   0 ADJ NSF process  
+ 170           0           1          0  0.00%  0.00%  0.00%   0 HRPC sisf reques 
+ 171           0           2          0  0.00%  0.00%  0.00%   0 HULC SISF Proces 
+ 172           0           1          0  0.00%  0.00%  0.00%   0 HULC SISF Source 
+ 173           0          30          0  0.00%  0.00%  0.00%   0 AAA Server       
+ 174           0           1          0  0.00%  0.00%  0.00%   0 AAA ACCT Proc    
+ 175           0           1          0  0.00%  0.00%  0.00%   0 ACCT Periodic Pr 
+ 176           0           1          0  0.00%  0.00%  0.00%   0 AAA System Acct  
+ 177           0           1          0  0.00%  0.00%  0.00%   0 Auth-proxy AAA B 
+ 178           0          96          0  0.00%  0.00%  0.00%   0 IP Admin SM Proc 
+ 179        5022       12698        395  0.00%  0.02%  0.00%   0 CDP Protocol     
+ 180           9          94         95  0.00%  0.00%  0.00%   0 SpanTree Flush   
+ 181           0           1          0  0.00%  0.00%  0.00%   0 Critical Auth    
+ 182           0           2          0  0.00%  0.00%  0.00%   0 AAA Dictionary R 
+ 183           0         240          0  0.00%  0.00%  0.00%   0 DHCP Snooping    
+ 184           0           1          0  0.00%  0.00%  0.00%   0 DHCP Snooping db 
+ 185           9           2       4500  0.00%  0.00%  0.00%   0 IP ARP Adjacency 
+ 186         983      853766          1  0.00%  0.00%  0.00%   0 IP ARP Retry Age 
+ 187        2558        6593        387  0.00%  0.06%  0.05%   0 IP Input         
+ 188           0           1          0  0.00%  0.00%  0.00%   0 ICMP event handl 
+ 189          80       55538          1  0.00%  0.00%  0.00%   0 IP ARP Track     
+ 190           0           1          0  0.00%  0.00%  0.00%   0 IPv6 ping proces 
+ 192           0           4          0  0.00%  0.00%  0.00%   0 SMI Director DB  
+ 193          48         479        100  0.00%  0.00%  0.00%   0 SMI CDP Update H 
+ 194           9           1       9000  0.00%  0.00%  0.00%   0 SMI Backup Proce 
+ 195           0         160          0  0.00%  0.00%  0.00%   0 HCMP sync proces 
+ 196           0           1          0  0.00%  0.00%  0.00%   0 SMI IBC client p 
+ 197           0           2          0  0.00%  0.00%  0.00%   0 SMI IBC Download 
+ 198        3134       42549         73  0.15%  0.01%  0.00%   0 Spanning Tree    
+ 199           0         481          0  0.00%  0.00%  0.00%   0 Spanning Tree St 
+ 200           0        2879          0  0.00%  0.00%  0.00%   0 Ethchnl          
+ 201           0          70          0  0.00%  0.00%  0.00%   0 TCP Timer        
+ 202          16          28        571  0.00%  0.00%  0.00%   0 TCP Protocols    
+ 203           0           1          0  0.00%  0.00%  0.00%   0 Socket Timers    
+ 204           9         100         90  0.00%  0.00%  0.00%   0 HTTP CORE        
+ 205           0         362          0  0.00%  0.00%  0.00%   0 Cluster L2       
+ 206           9        2878          3  0.00%  0.00%  0.00%   0 Cluster RARP     
+ 207         130        4074         31  0.00%  0.00%  0.00%   0 Cluster Base     
+ 208          17         576         29  0.00%  0.00%  0.00%   0 CEF background p 
+ 209           0           1          0  0.00%  0.00%  0.00%   0 fib_fib_bfd_sb e 
+ 210           0           1          0  0.00%  0.00%  0.00%   0 IP IRDP          
+ 211           0           1          0  0.00%  0.00%  0.00%   0 RARP Input       
+ 212           0           2          0  0.00%  0.00%  0.00%   0 Dot1x Supplicant 
+ 213           0           2          0  0.00%  0.00%  0.00%   0 Dot1x Supplicant 
+ 214           0           2          0  0.00%  0.00%  0.00%   0 Dot1x Supplicant 
+ 215           0           1          0  0.00%  0.00%  0.00%   0 MAB Framework    
+ 216           0           1          0  0.00%  0.00%  0.00%   0 HRPC dhcp snoopi 
+ 217           0           4          0  0.00%  0.00%  0.00%   0 HULC DHCP Snoopi 
+ 218          51          61        836  0.00%  0.00%  0.00%   0 IGMPSN L2MCM     
+ 219           0           1          0  0.00%  0.00%  0.00%   0 IGMPSN MRD       
+ 220          51         166        307  0.00%  0.00%  0.00%   0 IGMPSN           
+ 221           0           1          0  0.00%  0.00%  0.00%   0 IGMPQR           
+ 222           0           3          0  0.00%  0.00%  0.00%   0 L2TRACE SERVER   
+ 223          75          57       1315  0.00%  0.00%  0.00%   0 MLDSN L2MCM      
+ 224           0           1          0  0.00%  0.00%  0.00%   0 MRD              
+ 225           0           1          0  0.00%  0.00%  0.00%   0 MLD_SNOOP        
+ 226           0           2          0  0.00%  0.00%  0.00%   0 Routing Topology 
+ 227         243       44695          5  0.00%  0.00%  0.00%   0 CEF: IPv4 proces 
+ 228           0           2          0  0.00%  0.00%  0.00%   0 ADJ background   
+ 229           0           2          0  0.00%  0.00%  0.00%   0 ADJ resolve proc 
+ 230           0           2          0  0.00%  0.00%  0.00%   0 IP RIB Update    
+ 231           0           1          0  0.00%  0.00%  0.00%   0 HRPC hl2mcm igmp 
+ 232           0           1          0  0.00%  0.00%  0.00%   0 HRPC hl2mcm mlds 
+ 233           0           2          0  0.00%  0.00%  0.00%   0 static           
+ 234           0           1          0  0.00%  0.00%  0.00%   0 IPv6 RIB Event H 
+ 235           8        2878          2  0.00%  0.00%  0.00%   0 QoS stats proces 
+ 236           0           7          0  0.00%  0.00%  0.00%   0 SNMP Timers      
+ 237           0           2          0  0.00%  0.00%  0.00%   0 TPLUS            
+ 239           0           1          0  0.00%  0.00%  0.00%   0 EPM MAIN PROCESS 
+ 240           0           2          0  0.00%  0.00%  0.00%   0 AAA Cached Serve 
+ 241           0          30          0  0.00%  0.00%  0.00%   0 LOCAL AAA        
+ 242           0           2          0  0.00%  0.00%  0.00%   0 ENABLE AAA       
+ 243           0           2          0  0.00%  0.00%  0.00%   0 LINE AAA         
+ 244           0           3          0  0.00%  0.00%  0.00%   0 LDAP process     
+ 246           0           3          0  0.00%  0.00%  0.00%   0 Collection proce 
+ 247           9          18        500  0.00%  0.00%  0.00%   0 NIST rng proc    
+ 248           0           1          0  0.00%  0.00%  0.00%   0 HRPC x_setup req 
+ 249           0           2          0  0.00%  0.00%  0.00%   0 crypto engine pr 
+ 250           0           1          0  0.00%  0.00%  0.00%   0 encrypt proc     
+ 251         210           4      52500  0.00%  0.00%  0.00%   0 Crypto CA        
+ 252           0           1          0  0.00%  0.00%  0.00%   0 Crypto PKI-CRL   
+ 253           0          25          0  0.00%  0.00%  0.00%   0 VTP Trap Process 
+ 254           0          89          0  0.00%  0.00%  0.00%   0 ASP Process Crea 
+ 255           8           2       4000  0.00%  0.00%  0.00%   0 DHCP Security He 
+ 256           0           1          0  0.00%  0.00%  0.00%   0 HCD Process      
+ 257           0           1          0  0.00%  0.00%  0.00%   0 HRPC cable diagn 
+ 259         168       76647          2  0.00%  0.00%  0.00%   0 PM Callback      
+ 260           0        2303          0  0.00%  0.00%  0.00%   0 dhcp snooping sw 
+ 261           8           2       4000  0.00%  0.00%  0.00%   0 DiagCard1/-1     
+ 262           9          78        115  0.00%  0.00%  0.00%   0 AAA SEND STOP EV 
+ 263           0           1          0  0.00%  0.00%  0.00%   0 Test AAA Client  
+ 264           0           1          0  0.00%  0.00%  0.00%   0 Syslog Traps     
+ 266           0           1          0  0.00%  0.00%  0.00%   0 Online Diag EEM  
+ 267           0          30          0  0.00%  0.00%  0.00%   0 EEM Server       
+ 268           0           2          0  0.00%  0.00%  0.00%   0 EEM Policy Direc 
+ 270           0           2          0  0.00%  0.00%  0.00%   0 EEM ED OIR       
+ 271           0         815          0  0.00%  0.00%  0.00%   0 EEM ED Timer     
+ 272           0          25          0  0.00%  0.00%  0.00%   0 Syslog           
+ 273           0           2          0  0.00%  0.00%  0.00%   0 STP FAST TRANSIT 
+ 274           0           2          0  0.00%  0.00%  0.00%   0 CSRT RAPID TRANS 
+ 275           8           2       4000  0.00%  0.00%  0.00%   0 Call Home proces 
+ 276           0           3          0  0.00%  0.00%  0.00%   0 EEM ED Test      
+ 277           0           3          0  0.00%  0.00%  0.00%   0 EEM ED Config    
+ 278           0           3          0  0.00%  0.00%  0.00%   0 EEM ED Env       
+ 279           0           3          0  0.00%  0.00%  0.00%   0 EM ED GOLD       
+ 280          26           7       3714  0.00%  0.00%  0.00%   0 VLAN Manager     
+ 281           8         480         16  0.00%  0.00%  0.00%   0 Call Home Timer  
+ 282           0          17          0  0.00%  0.00%  0.00%   0 SSH Event handle 
+ 283        2307        5359        430  0.00%  0.00%  0.00%   0 IP SNMP          
+ 284        1568        2720        576  0.00%  0.00%  0.00%   0 PDU DISPATCHER   
+ 285        9708        2723       3565  0.15%  0.02%  0.02%   0 SNMP ENGINE      
+ 286           0           2          0  0.00%  0.00%  0.00%   0 IP SNMPV6        
+ 287           0           1          0  0.00%  0.00%  0.00%   0 SNMP ConfCopyPro 
+ 288          33          16       2062  0.00%  0.00%  0.00%   0 SNMP Traps       
+ 290        4385       21124        207  0.00%  0.01%  0.00%   0 LLDP Protocol    
+ 291         210       29126          7  0.00%  0.00%  0.00%   0 NTP             
+
+------------------ show process cpu history ------------------
+
+                                                                  
+                                                                  
+                                                                  
+                                                       66666      
+      555544444444445555588888999994444444444444446666666666888884
+  100                                                           
+   90                                                           
+   80                                                           
+   70                                                  *****    
+   60                                                  *****    
+   50                                                  *****    
+   40                                                  *****    
+   30                                                  *****    
+   20                                                  *****    
+   10 ****          ***************               **************
+     0....5....1....1....2....2....3....3....4....4....5....5....6
+               0    5    0    5    0    5    0    5    0    5    0
+               CPU% per second (last 60 seconds)
+
+                                                                  
+                                                                  
+                                                                  
+      61345 11111 1111111411111111 1 111111111111111111 1111 11121
+      629789043549203333382134342493920443212433033032362237633391
+  100                                                           
+   90                                                           
+   80                                                           
+   70 *                                                         
+   60 *   *                                                     
+   50 *  **              *                                      
+   40 * ***              *                                      
+   30 * ***              *                                      
+   20 * ***    *         *                                 *    
+   10 #################################################*####*###
+     0....5....1....1....2....2....3....3....4....4....5....5....6
+               0    5    0    5    0    5    0    5    0    5    0
+               CPU% per minute (last 60 minutes)
+              * = maximum CPU%   # = average CPU%
+
+                                                                              
+                                                                              
+                                                                              
+      8355446                                                                 
+      4686482                                                                 
+  100                                                                       
+   90                                                                       
+   80 *                                                                     
+   70 *                                                                     
+   60 * **  *                                                               
+   50 * ** **                                                               
+   40 *******                                                               
+   30 *******                                                               
+   20 *******                                                               
+   10 #######                                                               
+     0....5....1....1....2....2....3....3....4....4....5....5....6....6....7..
+               0    5    0    5    0    5    0    5    0    5    0    5    0  
+                   CPU% per hour (last 72 hours)
+                  * = maximum CPU%   # = average CPU%
+
+

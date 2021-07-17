@@ -1,0 +1,738 @@
+------------------ show clock ------------------
+
+
+16:08:07.622 MSK Thu Jul 15 2021
+
+------------------ show version ------------------
+
+Cisco IOS Software, C2960X Software (C2960X-UNIVERSALK9-M), Version 15.2(7)E0a, RELEASE SOFTWARE (fc1)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2019 by Cisco Systems, Inc.
+Compiled Fri 12-Apr-19 04:09 by prod_rel_team
+
+ROM: Bootstrap program is C2960X boot loader
+BOOTLDR: C2960X Boot Loader (C2960X-HBOOT-M) Version 15.2(6r)E, RELEASE SOFTWARE (fc1)
+
+sw-c2960-48p-7 uptime is 7 hours, 57 minutes
+System returned to ROM by power-on
+System restarted at 08:10:14 MSK Thu Jul 15 2021
+System image file is "flash:c2960x-universalk9-mz.152-7.E0a.bin"
+Last reload reason: power-on
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+cisco WS-C2960X-48FPS-L (APM86XXX) processor (revision B0) with 524288K bytes of memory.
+Processor board ID JTV2346101L
+Last reset from power-on
+2 Virtual Ethernet interfaces
+1 FastEthernet interface
+52 Gigabit Ethernet interfaces
+2 Ten Gigabit Ethernet interfaces
+The password-recovery mechanism is enabled.
+
+512K bytes of flash-simulated non-volatile configuration memory.
+Base ethernet MAC Address       : 7C:21:0D:11:59:80
+Motherboard assembly number     : 73-16691-07
+Power supply part number        : 341-0527-03
+Motherboard serial number       : FOC23375RMA
+Power supply serial number      : DCB233160LL
+Model revision number           : B0
+Motherboard revision number     : B0
+Model number                    : WS-C2960RX-48FPS-L
+Daughterboard assembly number   : 73-14200-03
+Daughterboard serial number     : FOC23380G8H
+System serial number            : JTV2346101L
+Top Assembly Part Number        : 68-5898-04
+Top Assembly Revision Number    : B0
+Version ID                      : V04
+Daughterboard revision number   : B0
+Hardware Board Revision Number  : 0x19
+
+
+Switch Ports Model                     SW Version            SW Image                 
+------ ----- -----                     ----------            ----------               
+*    1 54    WS-C2960X-48FPS-L         15.2(7)E0a            C2960X-UNIVERSALK9-M     
+
+
+Configuration register is 0xF
+
+
+------------------ show running-config ------------------
+
+
+Building configuration...
+
+Current configuration : 12575 bytes
+!
+! Last configuration change at 10:34:07 MSK Thu Jul 15 2021 by admin
+!
+version 15.2
+no service pad
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+!
+hostname sw-c2960-48p-7
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 <removed>
+!
+username admin secret 5 <removed>
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authentication enable default enable
+aaa authorization console
+!
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone MSK 3 0
+switch 1 provision ws-c2960x-48fps-l
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip domain-name maygk.ru
+vtp domain CROC
+vtp mode off
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-219240832
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-219240832
+ revocation-check none
+ rsakeypair TP-self-signed-219240832
+!
+!
+crypto pki certificate chain TP-self-signed-219240832
+ certificate self-signed 01
+  30820229 30820192 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32313932 34303833 32301E17 0D313931 32313331 30313935 
+  375A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3231 39323430 
+  38333230 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  A2586ADB 5CFA7760 40BB2FC9 3D31FEBC 827451DB F7D65A73 24A9E87C F9C74A34 
+  447B9AEB E8EB9397 6B2C92CD 75A109B4 FC8F1FAB A33BB5A0 8C4D7474 3CD0D404 
+  F0A9A8E0 022C631F 9DD5A2C0 4FD304EA 319A8EC8 11CCF2BF 73D8B67E 76214D24 
+  42005C03 8BD8E6A2 417A3893 D18D191F 9FBE38F8 32C5376E 3BA0B8BD BC26AC6B 
+  02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F 0603551D 
+  23041830 16801423 3270D6DE 6DEB03CC BB9E113F 541EB792 E2790830 1D060355 
+  1D0E0416 04142332 70D6DE6D EB03CCBB 9E113F54 1EB792E2 7908300D 06092A86 
+  4886F70D 01010505 00038181 0036F5E6 FF590BC7 3615411B 8BAE9E25 60D1DE06 
+  C1DFB7D4 783BEDE6 AFD04327 429C1E95 8CB0A6BE 0BC8514B 2FEAED9D 82BBD01D 
+  DAA6A29D DF104EC0 1C9429DB 8FCECA26 6C177E08 A636C6D9 7202B01C 54425D4F 
+  51F53D58 41E5B0FC 181B1B67 FC1A81EA BE4A856E 6AE76BEE B0475908 947301C4 
+  96147B92 E21A3C1A DA3AC83C D4
+  	quit
+!
+spanning-tree mode mst
+spanning-tree logging
+spanning-tree extend system-id
+!
+!
+!
+!
+!
+vlan 100
+ name USERS
+!
+vlan 101
+ name WIFI_CORPORATE
+!
+vlan 102
+ name IP_TELEPHONY
+!
+vlan 105
+ name PRINTERS
+!
+vlan 106
+ name CSGroup_USERS
+!
+vlan 107
+ name GUEST_WIFI
+!
+vlan 108
+ name TELECOM_DEPARTAMENT
+!
+vlan 120
+ name NEVA_OLD_NET
+!
+vlan 400
+ name VIDEO
+!
+vlan 900
+ name MGMT
+!
+vlan 910
+ name WIFI_MGMT
+!
+vlan 999
+ name RSPAN
+ remote-span
+!
+lldp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0
+ no ip address
+!
+interface GigabitEthernet1/0/1
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/2
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/3
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/4
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/5
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/6
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/7
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/8
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/9
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/10
+ description CAM na stolbe v'ezd
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/11
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/12
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/13
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/14
+ description Cam Parking
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/15
+ description 7P-12
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/16
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/17
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/18
+ description P1-15 (NetPing)
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/19
+ description 10P-16 room 209 Peregovorka IP Phone
+ switchport access vlan 100
+ switchport mode access
+ switchport nonegotiate
+ switchport voice vlan 102
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/20
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/21
+ description TEST CAMERA
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/22
+ description Nazimkina Maria
+ switchport access vlan 100
+ switchport mode access
+ switchport nonegotiate
+ switchport voice vlan 102
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/23
+ description ohrana
+ switchport access vlan 400
+ switchport mode access
+ switchport nonegotiate
+ switchport voice vlan 102
+ spanning-tree portfast edge
+ spanning-tree bpdufilter enable
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/24
+ description => ap-1231g-1
+ switchport access vlan 910
+ switchport trunk allowed vlan 101,107,910
+ switchport mode trunk
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/25
+ description => ap-2602e-3
+ switchport access vlan 910
+ switchport trunk allowed vlan 101,107,910
+ switchport mode trunk
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/26
+ description Konstantin Kovalev
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/27
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/28
+!
+interface GigabitEthernet1/0/29
+ switchport access vlan 100
+ switchport mode access
+!
+interface GigabitEthernet1/0/30
+!
+interface GigabitEthernet1/0/31
+ description 13p-9 Gavrisenko
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/32
+ description 13p-10 Shmonin
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/33
+ description 13P-02 Goshca
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/34
+ description 13P-24
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/35
+ description 13P-05 (test Oleg n Gosha)
+ switchport access vlan 100
+ switchport trunk allowed vlan 101,107,910
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+ spanning-tree guard loop
+!
+interface GigabitEthernet1/0/36
+!
+interface GigabitEthernet1/0/37
+!
+interface GigabitEthernet1/0/38
+!
+interface GigabitEthernet1/0/39
+!
+interface GigabitEthernet1/0/40
+ description 9P-18
+ switchport access vlan 100
+ switchport mode access
+!
+interface GigabitEthernet1/0/41
+!
+interface GigabitEthernet1/0/42
+!
+interface GigabitEthernet1/0/43
+!
+interface GigabitEthernet1/0/44
+ description 13P-04 Oleg
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/45
+ description Mihail Kozirev
+ switchport access vlan 100
+ switchport mode access
+ switchport voice vlan 102
+ spanning-tree portfast edge
+!
+interface GigabitEthernet1/0/46
+!
+interface GigabitEthernet1/0/47
+ description sw-3750-core-1
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/48
+ description sw-3750-core-2
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/49
+!
+interface GigabitEthernet1/0/50
+!
+interface GigabitEthernet1/0/51
+!
+interface GigabitEthernet1/0/52
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan900
+ ip address 172.20.254.7 255.255.255.128
+!
+ip default-gateway 172.20.254.1
+!
+no ip http server
+no ip http secure-server
+ip ssh logging events
+ip ssh version 2
+ip ssh pubkey-chain
+  username admin
+   key-hash ssh-rsa AEFFA60289991D164599F3F09BD6DC61 
+!
+ip access-list standard SNMP-ACL
+ permit 172.20.140.157
+ deny   any log
+!
+ip access-list extended MGMT
+ permit tcp 172.20.120.0 0.0.0.255 any eq 22 log
+!
+!
+snmp-server group G1 v3 priv access SNMP-ACL
+snmp-server trap-source Vlan900
+snmp-server enable traps transceiver all
+snmp-server enable traps tty
+snmp-server enable traps config
+snmp-server enable traps cpu threshold
+snmp-server enable traps envmon fan shutdown supply temperature status
+snmp-server enable traps errdisable
+snmp-server host 172.20.140.157 version 3 priv <removed> 
+snmp mib flash cache
+!
+!
+banner motd ^CCC
+This is an official computer system and is the property of the
+CJSC "CCT MAY". It is for authorized users only. Unauthorized users
+are prohibited. Users (authorized or unauthorized) have no explicit
+or implicit expectation of privacy. Any or all uses of this system
+may be subject to one or more of the following actions: interception,
+monitoring, recording, auditing, inspection and disclosing to security
+personnel and law enforcement personnel, as well as authorized
+officials of other agencies, both domestic and foreign. By using this
+system, the user consents to these actions. Unauthorized or improper
+use of this system may result in administrative disciplinary action
+and civil and criminal penalties. By accessing this system you
+indicate your awareness of and consent to these terms and conditions
+of use. Discontinue access immediately if you do not agree to the
+conditions stated in this notice.
+
+^C
+!
+line con 0
+ exec-timeout 5 0
+ logging synchronous
+line vty 0 4
+ exec-timeout 5 0
+ logging synchronous
+ transport preferred none
+ transport input telnet ssh
+line vty 5 15
+ exec-timeout 5 0
+ logging synchronous
+ transport preferred none
+ transport input telnet ssh
+!
+ntp server 172.20.140.3
+!
+end
+
+
+------------------ show debug ------------------
+
+
+
+------------------ dir all-filesystems ------------------
+
+
+Directory of flash:/
+
+  697  -rwx        3096  Jul 15 2021 11:12:55 +03:00  multiple-fs
+    2  -rwx        1296  Jul 15 2021 11:12:49 +03:00  vlan.dat
+    3  -rwx    26534912  Dec 13 2019 12:36:02 +03:00  c2960x-universalk9-mz.152-7.E0a.bin
+    4  -rwx       11335   Jul 1 2021 15:34:27 +03:00  config.text
+    5  -rwx        5654   Jul 1 2021 15:34:28 +03:00  private-config.text
+    7  drwx         512  Nov 11 2019 12:50:24 +03:00  c2960x-universalk9-mz.152-4.E8
+  695  drwx         512  Nov 11 2019 12:50:24 +03:00  dc_profile_dir
+
+122185728 bytes total (64850944 bytes free)
+Directory of system:/
+
+    2  -r--           0                    <no date>  default-running-config
+    4  dr-x           0                    <no date>  memory
+    1  -rw-       12610  Jul 15 2021 11:12:49 +03:00  running-config
+    3  dr-x           0                    <no date>  vfiles
+
+No space information available
+Directory of tmpsys:/
+
+    6  drw-           0                    <no date>  eem_lib_system
+    5  drw-           0                    <no date>  eem_lib_user
+   18  -rw-           0                    <no date>  eem_pnt_0
+   20  -rw-           0                    <no date>  eem_pnt_1
+   38  -rw-           0                    <no date>  eem_pnt_10
+   40  -rw-           0                    <no date>  eem_pnt_11
+   42  -rw-           0                    <no date>  eem_pnt_12
+   44  -rw-           0                    <no date>  eem_pnt_13
+   46  -rw-           0                    <no date>  eem_pnt_14
+   48  -rw-           0                    <no date>  eem_pnt_15
+   22  -rw-           0                    <no date>  eem_pnt_2
+   24  -rw-           0                    <no date>  eem_pnt_3
+   26  -rw-           0                    <no date>  eem_pnt_4
+   28  -rw-           0                    <no date>  eem_pnt_5
+   30  -rw-           0                    <no date>  eem_pnt_6
+   32  -rw-           0                    <no date>  eem_pnt_7
+   34  -rw-           0                    <no date>  eem_pnt_8
+   36  -rw-           0                    <no date>  eem_pnt_9
+    4  drw-           0                    <no date>  eem_policy
+    8  drw-           0                    <no date>  eem_pub
+   17  -rw-           0                    <no date>  eem_rpc_0
+   19  -rw-           0                    <no date>  eem_rpc_1
+   37  -rw-           0                    <no date>  eem_rpc_10
+   39  -rw-           0                    <no date>  eem_rpc_11
+   41  -rw-           0                    <no date>  eem_rpc_12
+   43  -rw-           0                    <no date>  eem_rpc_13
+   45  -rw-           0                    <no date>  eem_rpc_14
+   47  -rw-           0                    <no date>  eem_rpc_15
+   21  -rw-           0                    <no date>  eem_rpc_2
+   23  -rw-           0                    <no date>  eem_rpc_3
+   25  -rw-           0                    <no date>  eem_rpc_4
+   27  -rw-           0                    <no date>  eem_rpc_5
+   29  -rw-           0                    <no date>  eem_rpc_6
+   31  -rw-           0                    <no date>  eem_rpc_7
+   33  -rw-           0                    <no date>  eem_rpc_8
+   35  -rw-           0                    <no date>  eem_rpc_9
+    7  drw-           0                    <no date>  eem_temp
+    1  dr-x           0                    <no date>  lib
+    9  drw-           0                    <no date>  macro_scripts
+
+No space information available
+Directory of nvram:/
+
+  513  -rw-       11335                    <no date>  startup-config
+  514  ----        5654                    <no date>  private-config
+  515  -rw-       11335                    <no date>  underlying-config
+    1  ----          86                    <no date>  persistent-data
+    2  -rw-           0                    <no date>  ifIndex-table
+    3  -rw-         557                    <no date>  IOS-Self-Sig#1.cer
+
+524288 bytes total (504175 bytes free)
+
+------------------ show stacks ------------------
+
+
+Minimum process stacks:
+ Free/Size   Name
+ 3660/6000   hulc_flash init
+ 5596/6000   ISSU Infra API Delayed Registration Process
+ 5616/6000   CDP BLOB
+ 8520/9000   IP Background
+ 8520/9000   IP Connected Route Background
+ 4868/6000   MDFS LC IPC Init Process
+11192/12000  MRIB IPv6 Init Process
+11188/12000  MRIB IPv4 Init Process
+ 8420/9000   EEM ED RF
+ 3800/6000   EEM Shell Director
+ 5412/6000   MDFS Reload
+10056/12000  master cfg mgr init process
+ 5316/6000   vqpc_shim_create_addr_tbl
+ 5280/6000   SPAN Subsystem
+ 5240/6000   stp_change_tree_type
+ 4948/6000   hpm bulk_vlan_state process
+59004/60000  EEM Auto Registration Proc
+ 5232/6000   REP LSL Hello PP Process
+18332/24000  Init
+11436/12000  auto configuration builtin templates for 2k
+ 2356/3000   LIM WAVL
+ 5228/6000   SASL MAIN
+ 5008/6000   LICENSE AGENT DEFAULT
+ 9164/12000  Auto configuration builtin tempalte creation
+ 8432/9000   cdp init process
+ 5228/6000   RADIUS INITCONFIG
+10440/12000  PnP Agent Discovery
+ 9076/12000  EPM CREATE DEFAULT CWA URL ACL
+ 5316/6000   Fixed SFP PLUS init process
+ 5388/6000   Hulc Backup Interface Process
+ 2436/3000   Rom Random Update Process
+ 4712/6000   platform OBFL
+ 8848/12000  OBFL POE obfl0
+ 4972/12000  SSH Process
+18668/24000  Exec
+18000/24000  hulc_techsupport_process
+
+Interrupt level stacks:
+Level    Called Unused/Size  Name
+  4   396648724   7960/9000  CPU NETWORK INTERFACE CHIP
+  5           0   9000/9000  Test Interrupt Handler
+  6    18545017   8920/9000  NS16550 VECTOR

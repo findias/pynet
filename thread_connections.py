@@ -5,16 +5,20 @@ from netmiko import Netmiko
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
 
+
 def yaml_import(file_config):                                      # Import file from yaml
     with open(file_config, 'r') as f:
         all_config_device = yaml.safe_load(f)
     return all_config_device
 
+
 def conf_file(yaml_config):                                         # Create config list
     devices_config_list = []
     for device_dic in yaml_config['hosts']:
         devices_config_list.append(device_dic)
+
     return devices_config_list
+
 
 def connect_and_send_command(host, command):                        # Connect to devices
     start_msg = '===> {} Connection: {}'
@@ -31,17 +35,18 @@ def connect_and_send_command(host, command):                        # Connect to
     )
     with net_connection as ssh:
         ssh.enable()
-        output = ssh.send_command(command)
+        output = ssh.send_command(command, expect_string=r"#")
         logging.info(received_msg.format(datetime.now().time(), ip))
     return output
 
 logging.getLogger('paramiko').setLevel(logging.WARNING)
 logging.basicConfig(
-format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
-level=logging.INFO)
+    format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
+    level=logging.INFO)
 
 all_device = yaml_import('conf_device.yaml')
-command ='show run'
+# command = 'show running-config'
+command = 'show tech-support'
 connect_value = conf_file(all_device)
 
 with ThreadPoolExecutor(max_workers=5) as executor:
