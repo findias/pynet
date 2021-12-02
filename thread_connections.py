@@ -35,18 +35,20 @@ def connect_and_send_command(host, command):                        # Connect to
     )
     with net_connection as ssh:
         ssh.enable()
-        output = ssh.send_command(command, expect_string=r"#")
+        output = ssh.send_command_timing(command, cmd_verify=True)
+        # output = ssh.send_command(command, expect_string=r"#")
         logging.info(received_msg.format(datetime.now().time(), ip))
     return output
 
 logging.getLogger('paramiko').setLevel(logging.WARNING)
 logging.basicConfig(
-    format = '%(threadName)s %(name)s %(levelname)s: %(message)s',
+    format='%(threadName)s %(name)s %(levelname)s: %(message)s',
     level=logging.INFO)
 
 all_device = yaml_import('conf_device.yaml')
 # command = 'show running-config'
-command = 'show tech-support'
+# command = 'show tech-support'
+command = 'show tech all'
 connect_value = conf_file(all_device)
 
 with ThreadPoolExecutor(max_workers=5) as executor:
